@@ -1,376 +1,218 @@
-# template-bmad_method_ext
+# Schüler-Mitarbeit-Tracker 📚
 
-Template für die systematische Umsetzung von Softwareprojekten mit Domain-Driven Design (DDD) und AI-gestützten Chatmodes.
+Eine Flutter-Anwendung zur schnellen und effizienten Erfassung der mündlichen Mitarbeit von Schülern im Unterricht.
 
-## Überblick
+## 📖 Übersicht
 
-Dieses Repository bietet einen **vollständigen Workflow** von der Anforderungserhebung bis zur Implementierung. Durch strukturierte AI-Chatmodes werden Sie schrittweise durch alle Phasen eines Softwareprojekts geführt:
+Der Schüler-Mitarbeit-Tracker wurde speziell für Lehrkräfte entwickelt, um die mündliche Beteiligung von Schülern während des Unterrichts einfach und diskret zu dokumentieren. Die App fokussiert sich auf eine schnelle Ein-Klick-Interaktion und bietet eine klare, datengestützte Grundlage für die Bewertung der Mitarbeit.
 
-1. **Requirements Engineering** - Interviews & Workshops zur Anforderungserhebung
-2. **Software Architecture** - Domain-Modellierung mit DDD
-3. **Software Development** - API-First Implementierung mit Clean Architecture
+### Hauptziele
 
-Jeder Chatmode erstellt spezifische Dokumente, die nahtlos ineinander greifen und eine vollständige Projektdokumentation bilden.
+- ⚡ **Schnelle Erfassung**: Positive Mitarbeit mit einem Klick protokollieren
+- 📊 **Datenbasierte Bewertung**: Objektive und nachvollziehbare Grundlage für die Notenvergabe
+- 🔒 **Datenschutz**: Alle Daten werden ausschließlich lokal gespeichert
+- 📁 **Einfacher Export**: CSV-Export für Weiterverarbeitung
 
-## Chatmode-Workflow
+## ✨ Features
 
-### Phase 1: Requirements Engineering
+### Kernfunktionen
 
-**Chatmode:** `requirements-engineer.chatmode.md`
+- **Schnellerfassung positive Mitarbeit**: Ein-Klick auf einen Schüler erhöht dessen Zähler
+- **Negative Verhaltensweisen**: Lang-Klick öffnet ein Menü mit vordefinierten negativen Aktionen
+- **Schüler- und Klassenverwaltung**: 
+  - Anlegen, Bearbeiten und Löschen von Klassen (Name, Klassenvorstand, Raumnummer, Schuljahr)
+  - Verwaltung von Fächern pro Klasse (Kürzel, vollständiger Name, Anmerkungen)
+  - Schülerverwaltung mit Namen, Foto und automatischem 3-stelligem Kürzel
+- **Fächerverwaltung**: Zuordnung von Fächern zu Klassen
+- **Konfigurierbare negative Aktionen**: Anpassbare Liste von negativen Verhaltensweisen
+- **Datenauswertung**: Übersicht über positive und negative Einträge pro Schüler
+- **CSV-Export**: Export der Daten einer Klasse mit Schülername, Datum, Typ und Details
 
-Führt durch die systematische Anforderungserhebung vom Projektkontext bis zur Story Map:
+### Datenschutz & Sicherheit
 
-1. **Projektkontext & Stakeholder-Identifikation**
-2. **Informationserhebung** (nutzt unterstützende Chatmodes):
-   - `request-interview.chatmode.md` - Simulierte Stakeholder-Interviews
-   - `request-workshop-moderator.chatmode.md` - Moderierte Workshops
-   - `request-workshop-stakeholder.chatmode.md` - Stakeholder-Perspektiven
-3. **Story Mapping** - Erstellung einer User Story Map
-4. **User Story Erstellung** - Dokumentation aller Stories
+- ✅ **100% lokale Datenspeicherung** mit SQLite
+- ✅ **Keine Cloud-Synchronisation**
+- ✅ **Keine Weitergabe personenbezogener Daten**
+- ✅ **Funktioniert vollständig offline**
 
-**Erstellt folgende Dokumente:**
-```
-docs/requirements/
-  ├── transcripts/
-  │   ├── interview_*.md              # Interview-Transkripte
-  │   └── workshop_summary.md         # Workshop-Zusammenfassungen
-  ├── story-map.md                    # User Story Map
-  ├── stakeholder-overview.md         # Stakeholder-Übersicht
-  └── user-stories/
-      └── user-story-*.md             # Alle User Stories
-```
+## 🛠️ Technologie-Stack
 
-### Phase 2: Software Architecture
+### Framework & Sprache
+- **Flutter** (SDK ^3.5.2)
+- **Dart**
 
-**Chatmodes:** DDD Architecture Workflow mit Handoffs (siehe [docs/chatmodes-workflow.md](docs/chatmodes-workflow.md))
+### Hauptabhängigkeiten
 
-Transformiert User Stories in ein vollständiges Domain-Modell durch drei strukturierte Phasen:
+#### State Management
+- `flutter_riverpod ^3.0.3` - Reaktives State Management
+- `riverpod_annotation ^3.0.3` - Code-Generierung für Riverpod
 
-#### Phase 2.1: Strategic Design
-**Chatmode:** `ddd-architect-strategic-design.chatmode.md`
+#### Datenpersistenz
+- `drift ^2.29.0` - Typsichere SQLite-Datenbank für Dart/Flutter
+- `sqlite3_flutter_libs ^0.5.40` - SQLite-Bibliotheken für Flutter
+- `path_provider ^2.1.5` - Zugriff auf Dateisystempfade
 
-1. **Domain Analysis** - Identifikation von Bounded Contexts
-2. **Ubiquitous Language** - Extraktion von Nomen, Verben und Geschäftsregeln
-3. **Domain Categorization** - Core Domain, Supporting, Generic Subdomain
-4. **Context Mapping** - Beziehungen zwischen Bounded Contexts
+#### UI & UX
+- `google_fonts ^6.3.0` - Schöne Schriftarten
+- `cupertino_icons ^1.0.8` - iOS-Style Icons
+- `image_picker ^1.1.2` - Auswahl/Aufnahme von Schülerfotos
 
-**➡️ Handoff:** `ddd-architect-taktik-design` (Taktisches Design starten)
+#### Export & Sharing
+- `csv ^6.0.0` - CSV-Datei-Generierung
+- `share_plus ^12.0.1` - Teilen von Dateien
 
-#### Phase 2.2: Tactical Design
-**Chatmode:** `ddd-architect-taktik-design.chatmode.md`
+#### Utilities
+- `intl ^0.20.2` - Internationalisierung und Datumsformatierung
+- `permission_handler ^12.0.1` - Verwaltung von App-Berechtigungen
 
-1. **DDD Building Blocks** - Aggregates, Entities, Value Objects identifizieren
-2. **Attribute & Beziehungen** - Detailliertes Modellieren
-3. **Geschäftslogik** - Methoden den richtigen Aggregaten zuordnen
-4. **Domain Services** - Aggregatübergreifende Logik
+### Dev Dependencies
+- `flutter_lints ^6.0.0` - Code-Qualität und Best Practices
+- `drift_dev ^2.29.0` - Code-Generierung für Drift
+- `build_runner ^2.4.13` - Build-Tool
+- `riverpod_generator ^3.0.3` - Code-Generierung für Riverpod
+- `riverpod_lint ^3.0.3` - Linting für Riverpod
 
-**➡️ Handoff:** `ddd-architect-visual-design` (Visualisierung starten)
+## 📊 Datenmodell
 
-#### Phase 2.3: Visual Design
-**Chatmode:** `ddd-architect-visual-design.chatmode.md`
+```mermaid
+erDiagram
+    SCHOOL_CLASS {
+        int id PK
+        string name
+        string classLeader
+        string roomID
+        string schoolYear
+    }
 
-1. **Glossar** - Vollständiges Ubiquitous Language Glossar
-2. **PlantUML Diagrams** - Visuelle Darstellung pro Bounded Context
-3. **Domain Model Documentation** - Umfassende Gesamt-Dokumentation
-4. **Traceability Matrix** - User Stories ↔ Aggregate Mapping
+    SUBJECT {
+        int id PK
+        string name
+        string fullName
+        string notes
+        int classId FK
+    }
 
-**➡️ Handoff:** `sw-developer` (Implementierung starten)
+    STUDENT {
+        int id PK
+        string firstName
+        string lastName
+        string photo
+        string shortCode
+        int classId FK
+    }
 
-**Erstellt folgende Dokumente:**
-```
-docs/architecture/
-  ├── bounded-contexts-overview.md    # Übersicht der Bounded Contexts
-  ├── domain-categorization.md        # Kategorisierung (Core/Supporting/Generic)
-  ├── aggregates-entities-valueobjects.md  # DDD Building Blocks
-  ├── ubiquitous-language-glossar.md  # Vollständiges Glossar
-  ├── ubiquitous-language_nomen&verben.md  # Initiale Extraktion
-  ├── traceability-matrix.md          # Nachverfolgbarkeit
-  ├── domain-model.md                 # Vollständige Dokumentation
-  └── domain-models/
-      └── *.domain-model.puml         # PlantUML Domain Models
-```
+    TEACHER {
+        int id PK
+        string name
+        string password
+    }
 
-> **💡 Hinweis:** Die Handoff-Funktionalität (automatische Übergänge zwischen Chatmodes) ist aktuell nur in **VS Code Insiders** verfügbar. In VS Code Stable verwenden Sie die expliziten Texthinweise am Ende jeder Phase.
+    PARTICIPATION {
+        int id PK
+        int studentId FK
+        int subjectId FK
+        date date
+        bool isPositive
+        string notes
+    }
 
-### Phase 3: Software Development
-
-#### Phase 3a: Backend Development
-
-**Chatmode:** `sw-developer.chatmode.md`
-
-Implementiert User Stories iterativ mit API-First Approach und Clean Architecture:
-
-1. **Story Selection** - Auswahl der zu implementierenden Story
-2. **API Design** - OpenAPI 3.0 Spezifikation
-3. **Domain Layer** - Value Objects, Entities, Aggregates
-4. **Application Layer** - Use Cases, DTOs, Ports
-5. **Infrastructure Layer** - Repositories, External Services
-6. **Interface Layer** - REST Controllers, GraphQL Resolver
-7. **Testing** - Unit, Integration, E2E, BDD
-8. **Documentation** - API Docs, Code Comments, ADRs
-
-**Technologie-Stack:**
-- TypeScript/Node.js mit NestJS
-- Clean/Hexagonal Architecture
-- DDD Tactical Patterns
-- TDD/BDD Testing
-- OpenAPI/Swagger
-
-#### Phase 3b: Frontend Development
-
-**Chatmode:** `sw-frontend-developer.chatmode.md`
-
-Implementiert User Stories iterativ mit Component-Driven Development und Design System Integration:
-
-1. **UX Analysis** - Benutzerfluss, Screens, States, Accessibility
-2. **UI Specification** - Komponenten-Design, Props, Responsive Behavior
-3. **API Client Layer** - OpenAPI Type Generation, Server State Management
-4. **State & Interaction** - Form Handling, Optimistic Updates, Keyboard Navigation
-5. **Component Implementation** - Atomic Design, Design Tokens, Styling
-6. **Testing** - Unit, Component (a11y), Visual Regression, E2E
-7. **Performance** - Code Splitting, Bundle Analysis, Web Vitals
-8. **Documentation** - Storybook, Prop Tables, Review Checklist
-
-**Technologie-Stack:**
-- React/Next.js/Vue/Svelte
-- Storybook + Design Tokens
-- CSS Modules/Tailwind/Styled Components
-- React Query/Zustand für State Management
-- react-hook-form + Zod für Forms
-- Vitest/Jest + Testing Library + Playwright
-- WCAG 2.1 AA Accessibility Standards
-
-**Erstellt folgende Artefakte:**
-```
-src/
-  ├── components/                    # Component-Driven Development
-  │   └── [Component]/
-  │       ├── [Component].tsx
-  │       ├── [Component].test.tsx
-  │       ├── [Component].stories.tsx
-  │       └── styles.module.css
-  ├── api/
-  │   ├── types/                     # OpenAPI Generated Types
-  │   └── clients/                   # API Client Wrappers
-  ├── state/
-  │   └── queries/                   # Server State (React Query)
-  ├── design/
-  │   └── tokens.ts                  # Design Tokens
-  └── ui/
-      └── patterns/                  # UI Patterns (Spinner, ErrorBoundary)
-ui-spec/                             # UI Specifications
-  └── [story-id].md
-analysis/                            # Frontend Analysis
-  └── [story-id]-frontend-analysis.md
-tests/e2e/                          # Playwright E2E Tests
+    SCHOOL_CLASS ||--o{ SUBJECT : has
+    SUBJECT ||--o{ STUDENT : includes
+    TEACHER ||--o{ SUBJECT : teaches
+    STUDENT ||--o{ PARTICIPATION : records
+    SUBJECT ||--o{ PARTICIPATION : tracks
 ```
 
-### Unterstützende Chatmodes
+## 🚀 Installation & Setup
 
-- **request-tec-crc.chatmode.md** - CRC-Card Sessions für OO-Analyse
-- **request-interview.chatmode.md** - Stakeholder-Interviews
-- **request-workshop-moderator.chatmode.md** - Workshop-Moderation
-- **request-workshop-stakeholder.chatmode.md** - Stakeholder-Simulation
+### Voraussetzungen
 
-## Quick Start
+- Flutter SDK (^3.5.2)
+- Dart SDK
+- Android Studio / VS Code mit Flutter-Plugin
+- Ein Android/iOS-Gerät oder Emulator
 
-### 1. Requirements Engineering starten
+### Installation
 
-Aktiviere den Chatmode `.github/chatmodes/requirements-engineer.chatmode.md`:
+1. Repository klonen oder herunterladen
 
-```
-Ich möchte ein neues Softwareprojekt starten. 
-Die Projektidee ist: [IHRE PROJEKTIDEE]
-```
-
-Der Chatmode führt Sie durch:
-- Stakeholder-Identifikation
-- Interview-/Workshop-Durchführung
-- Story Map Erstellung
-- User Story Dokumentation
-
-### 2. Software Architecture erstellen
-
-Aktiviere den Chatmode `.github/chatmodes/sw-architect.chatmode.md`:
-
-```
-Analysiere die User Stories und erstelle das Domain Model.
-Basis: docs/requirements/user-stories/*.md
+2. Dependencies installieren:
+```bash
+flutter pub get
 ```
 
-Der Chatmode erstellt:
-- Bounded Contexts
-- Domain Models (PlantUML)
-- Ubiquitous Language
-- Architektur-Entscheidungen
-- Verfeinerte User Stories
-
-### 3. Software Development durchführen
-
-#### Backend Implementation
-
-Aktiviere den Chatmode `.github/chatmodes/sw-developer.chatmode.md`:
-
-```
-Implementiere die Story: [STORY-NAME]
-Basis: docs/requirements/user-stories/refined/[STORY].md
+3. Code-Generierung ausführen:
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
-Der Chatmode implementiert:
-- OpenAPI Spezifikation
-- Domain Layer (DDD Patterns)
-- Application Layer (Use Cases)
-- Infrastructure Layer (Repositories)
-- Interface Layer (REST/GraphQL)
-- Tests (Unit/Integration/E2E)
-
-#### Frontend Implementation
-
-Aktiviere den Chatmode `.github/chatmodes/sw-frontend-developer.chatmode.md`:
-
-```
-Implementiere User Story US-010 (Profil bearbeiten)
-Basis: docs/requirements/user-stories/refined/[STORY].md
+4. App starten:
+```bash
+flutter run
 ```
 
-Der Chatmode implementiert:
-- UI Spec & Component Design
-- API Client Generation (OpenAPI Types)
-- React Components mit Design Tokens
-- State Management (React Query)
-- Storybook Stories
-- Tests (Unit/Component/E2E/A11y)
-- Performance Optimierung
+## 📱 Verwendung
 
-## Dokument-Struktur
+### Erster Start
 
-```
-docs/
-├── requirements/                    # Requirements Engineering Outputs
-│   ├── transcripts/                # Interview & Workshop Transkripte
-│   │   ├── interview_*.md
-│   │   └── workshop_summary.md
-│   ├── user-stories/               # User Stories
-│   │   ├── user-story-*.md
-│   │   └── refined/                # Technisch verfeinerte Stories
-│   │       └── user-story-refinement-*.md
-│   ├── story-map.md                # User Story Map
-│   ├── stakeholder-overview.md     # Stakeholder-Übersicht
-│   ├── mvp-summary.md              # MVP Definition
-│   └── epics.md                    # Epic-Übersicht
-│
-└── architecture/                    # Software Architecture Outputs
-    ├── bounded-contexts-overview.md
-    ├── domain-categorization.md
-    ├── agregates-entites-value_obj.md
-    ├── architecture-decisions.md
-    ├── ubiquitous-language-glossar.md
-    ├── ubiquitous-language_nomen&verben.md
-    ├── traceability-matrix.md
-    └── domain-models/              # PlantUML Domain Models
-        ├── *.domain-model.puml
-        └── domain-model.md
-```
+1. Beim ersten Start eine Klasse anlegen
+2. Schüler zur Klasse hinzufügen
+3. Optional Fächer konfigurieren
+4. Optional negative Verhaltensweisen anpassen
 
-## Konventionen & Best Practices
+### Während des Unterrichts
 
-Das Template enthält Standards für konsistente Entwicklung:
+1. **Positive Mitarbeit erfassen**: Kurzer Klick auf einen Schüler
+2. **Negative Aktion erfassen**: Langer Klick → Aktion aus dem Menü wählen
+3. Visuelles Feedback bestätigt die Erfassung
 
-- **Naming Conventions**: `.agent-resources/definitions-conventions/naming-conventions.md`
-  - DDD Naming (Value Objects, Entities, Aggregates, etc.)
-  - TypeScript/Node.js Konventionen
-  
-- **Testing Strategy**: `.agent-resources/definitions-conventions/testing-strategy.md`
-  - Unit Testing (Domain Layer)
-  - Integration Testing (Application/Infrastructure)
-  - E2E Testing (Interface Layer)
-  - BDD mit Gherkin
+### Auswertung
 
-## Methodologie
+1. Detailansicht pro Schüler aufrufen
+2. Übersicht über positive/negative Einträge einsehen
+3. Bei Bedarf Daten als CSV exportieren
 
-Dieses Template basiert auf:
+## 📄 Export-Format
 
-- **Domain-Driven Design (DDD)**
-  - Strategic Design: Bounded Contexts, Ubiquitous Language
-  - Tactical Design: Aggregates, Entities, Value Objects
-  
-- **Clean/Hexagonal Architecture**
-  - Domain Layer (Business Logic)
-  - Application Layer (Use Cases)
-  - Infrastructure Layer (Technical Details)
-  - Interface Layer (API/UI)
-  
-- **API-First Development**
-  - OpenAPI 3.0 Spezifikation vor Implementierung
-  - Contract-First Approach
-  - Automatische Validierung & Dokumentation
-  
-- **Test-Driven Development (TDD)**
-  - Red-Green-Refactor Cycle
-  - Behavior-Driven Development (BDD)
-  - Multi-Level Testing Strategy
+Die CSV-Exportdatei enthält folgende Spalten:
+- Schülername
+- Datum
+- Typ (Positiv/Negativ)
+- Details (bei negativen Einträgen)
+- Klasse
+- Fach
 
-## Beispiel-Workflow
+## 🎯 Erfolgsmetriken
 
-1. **Projekt initialisieren**
-   ```
-   Chatmode: requirements-engineer.chatmode.md
-   Input: Projektidee
-   Output: docs/requirements/
-   ```
+- **⏱️ Erfassungszeit**: < 2 Sekunden pro Interaktion
+- **🖱️ Export**: < 5 Klicks für CSV-Export
+- **📱 Performance**: Schnelle App-Startzeit, auch bei 500+ Schülern
+- **🔋 Ressourcen**: Minimale Akku-Belastung
 
-2. **Domain modellieren**
-   ```
-   Chatmode: sw-architect.chatmode.md
-   Input: docs/requirements/user-stories/*.md
-   Output: docs/architecture/
-   ```
+## 🗺️ Roadmap
 
-3. **Story implementieren**
-   ```
-   Backend:
-   Chatmode: sw-developer.chatmode.md
-   Input: docs/requirements/user-stories/refined/user-story-*.md
-   Output: src/, tests/, docs/api/
-   
-   Frontend:
-   Chatmode: sw-frontend-developer.chatmode.md
-   Input: docs/requirements/user-stories/refined/user-story-*.md
-   Output: src/components/, src/api/, ui-spec/, tests/e2e/
-   ```
+### Phase 1: MVP ✅
+- Grundlegende Schüler- und Klassenverwaltung
+- Ein-Klick-Erfassung für positive Mitarbeit
 
-4. **Nächste Story**
-   ```
-   Wiederhole Schritt 3 für jede Story
-   ```
+### Phase 2: Kernfunktionen 🚧
+- Lang-Klick-Funktion für negative Mitarbeit
+- Konfigurationsbildschirm für negative Aktionen
 
-## Repository Structure
+### Phase 3: Auswertung & Abschluss 📋
+- Datenübersicht
+- CSV-Export
+- Testing & Bugfixing
 
-```
-template-bmad_method_ext/
-├── README.md                           # Diese Datei
-├── requirements.md                     # Anforderungen an das Template
-├── .github/chatmodes/                  # Chatmode Definitionen
-│   ├── requirements-engineer.chatmode.md
-│   ├── sw-architect.chatmode.md
-│   ├── sw-developer.chatmode.md
-│   ├── sw-frontend-developer.chatmode.md
-│   ├── request-interview.chatmode.md
-│   ├── request-workshop-moderator.chatmode.md
-│   ├── request-workshop-stakeholder.chatmode.md
-│   └── request-tec-crc.chatmode.md
-├── .agent-resources/
-│   └── definitions-conventions/        # Entwicklungsstandards
-│       ├── naming-conventions.md       # DDD Naming
-│       └── testing-strategy.md         # Testing Best Practices
-├── chatmodes/                          # Dokumentation
-│   ├── README.md
-│   └── EXAMPLES.md
-└── docs/                               # Projekt-Dokumentation
-    ├── requirements/                   # Von requirements-engineer erstellt
-    └── architecture/                   # Von sw-architect erstellt
-```
+## 🤝 Beitragen
+
+Dies ist ein privates Projekt. Bei Fragen oder Anregungen bitte ein Issue erstellen.
+
+## 📝 Lizenz
+
+Dieses Projekt ist für den privaten/schulischen Gebrauch bestimmt.
 
 ---
 
-**Ready to get started?** Beginnen Sie mit dem `requirements-engineer.chatmode.md` und lassen Sie sich durch den kompletten Entwicklungsprozess führen!
+**Version**: 1.0.0+1  
+**Entwickelt mit** ❤️ **und Flutter**

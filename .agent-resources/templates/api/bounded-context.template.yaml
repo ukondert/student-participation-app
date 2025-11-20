@@ -1,0 +1,110 @@
+openapi: 3.0.3
+info:
+  title: [Bounded Context] API
+  description: API für [Bounded Context Beschreibung]
+  version: 1.0.0
+  contact:
+    name: Development Team
+    email: dev@school-rideshare.com
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Development Server
+  - url: https://api.school-rideshare.com/v1
+    description: Production Server
+
+tags:
+  - name: [Resource]
+    description: [Resource Beschreibung]
+
+paths:
+  /[resource]:
+    get:
+      summary: Liste alle [Resources]
+      tags: [Resource]
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/LimitParam'
+      responses:
+        '200':
+          description: Erfolgreiche Antwort
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/[Resource]ListResponse'
+    post:
+      summary: Erstelle neue [Resource]
+      tags: [Resource]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Create[Resource]Request'
+      responses:
+        '201':
+          description: [Resource] erstellt
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  schemas:
+    [Resource]:
+      type: object
+      required:
+        - id
+        - [requiredField]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Eindeutige ID
+        [field]:
+          type: string
+          description: [Beschreibung]
+  
+  responses:
+    BadRequest:
+      description: Ungültige Anfrage
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    
+    Unauthorized:
+      description: Nicht authentifiziert
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Seitennummer (1-basiert)
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    
+    LimitParam:
+      name: limit
+      in: query
+      description: Anzahl Elemente pro Seite
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []

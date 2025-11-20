@@ -1,0 +1,6 @@
+Ich möchte ausgehend von User Stories mit HIlfe von mehreren custom Agents (siehe https://code.visualstudio.com/docs/copilot/customization/custom-agents) die sequentiell durchlaufen werden die Software Architektur für eine typische 3 Tier Architektur (Frontend - MiddltTier(Bussineslogic) - Backend) erstellen mit folgender Vorgehensweise:
+1. UserStories zu UseCase Mapping
+2. Domaindriven Desgin für Backend
+3. BFF (Backend First)
+4. Component Driven Design
+Die unterschiedlichen Agents sollen entsprechende typische Artefakte erstellen, welche als aussagekräftige Basis für die agile Umsetzung/Implementierung  von Features sind, die mit Hilfe des Development Angent umgesetzt werden. Dabei soll der API-First Ansatz verwendet werden. Als Unterstützung soll custom instructins für die unterschiedlichen Programmiersprachen verwendet werden (z.B. von https://github.com/github/awesome-copilot). Die Agents sollen für human-in-the-loop Aktionen verwendet werden. Geeignette Custom Prompts hingegen für spezifische Aufgaben, die im normalfall keine Interaktion mit dem Benutzer benötigen (create commit, document feature, usw.)

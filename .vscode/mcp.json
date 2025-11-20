@@ -1,0 +1,34 @@
+{
+	"servers": {
+		"chrome-devtools": {
+			"type": "stdio",
+			"command": "npx",
+			"args": ["-y", "chrome-devtools-mcp@latest"]
+		},
+		"Ref": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"ref-tools-mcp@latest"
+			],
+			"env": {
+				"REF_API_KEY": "ref-beed9e1711b0f9e0c9c3"
+			},
+			
+		},
+		"sequentialthinking": {
+			"type": "stdio",
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-sequential-thinking@latest"
+			],
+			"gallery": true
+		},
+		"github": {
+			"type": "http",
+			"url": "https://api.githubcopilot.com/mcp/"
+    	}
+	},
+	"inputs": []
+}

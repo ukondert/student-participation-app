@@ -1,0 +1,148 @@
+meta:
+  title: Domain-Driven Design – Best Practices
+  format: KI-Agent optimiert
+  version: '1.0'
+  generated: automatisch durch KI
+  structure:
+  - Architecture Overview
+  - Value Objects
+  - Entities
+  - Aggregates
+  - Repositories
+  - Factories
+  - Domain Events
+  - Application Services
+  - Infrastructure
+  - Testing & Automation
+  - Naming & Structure
+  - KI-Agent Integration Summary
+layers:
+  Domain Layer:
+    responsibility: Fachlogik, Invarianten, Modelle
+    components:
+    - Entities
+    - Value Objects
+    - Domain Events
+    rules:
+    - Unabhängig von technischen Frameworks
+    - Enthält zentrale Geschäftsregeln
+  Application Layer:
+    responsibility: Orchestrierung von Use Cases
+    components:
+    - Application Services
+    - Commands
+    rules:
+    - Koordination ohne Geschäftslogik
+    - Verwendet Domain Layer
+  Infrastructure Layer:
+    responsibility: Technische Umsetzung
+    components:
+    - Repositories
+    - DB
+    - Messaging
+    rules:
+    - Implementiert Repositories
+    - Adapter für externe Systeme
+  Interface Layer:
+    responsibility: Ein- und Ausgabe (z. B. REST, UI)
+    components:
+    - Controllers
+    - DTOs
+    rules:
+    - Validierung von Eingaben
+    - Übersetzung zwischen Formaten
+artefacts:
+  Value Object:
+    definition: Kleines, bedeutungsvolles Objekt ohne Identität, das sich selbst validiert
+    principles:
+    - immutable
+    - equals by value
+    - always valid
+    validation: Invariantenprüfung im Konstruktor oder Factory
+    notes:
+    - Keine Bean Validation direkt im VO (optional bei pragmatischer Nutzung)
+    - Erzeuge VO über static factory method (z. B. of())
+  Entity:
+    definition: Objekt mit konsistenter Identität über Zeit
+    principles:
+    - identity-based equality
+    - mutation nur über Methoden
+    rules:
+    - Vermeide Setter
+    - Verwende UUID oder Business-ID als Schlüssel
+  Aggregate:
+    definition: Konsistenzgrenze, innerhalb der alle Regeln gelten
+    principles:
+    - nur Root ist öffentlich
+    - eine Transaktion pro Aggregate
+    guidelines:
+    - Halte VO und Entities innerhalb des Aggregates gekapselt
+    - Vermeide Referenzen zwischen Aggregates (nur ID)
+  Repository:
+    definition: Abstrakte Schnittstelle zur Persistenz von Aggregate Roots
+    principles:
+    - Interface im Domain Layer
+    - Implementierung in Infrastructure
+    methods:
+    - save
+    - findById
+    - deleteById
+    rules:
+    - Keine Businesslogik
+    - Nur Aggregate Root speichern
+  Factory:
+    definition: Erzeugt komplexe Aggregate oder Entities
+    use_cases:
+    - Mehrstufige Erzeugung
+    - Kapselung von Invarianten
+    recommendations:
+    - Nutze bei komplexen Konstruktionen
+    - VOs mit of()
+  Domain Event:
+    definition: Unveränderliches Ereignis, das Zustandsänderung beschreibt
+    principles:
+    - immutable
+    - vergangene Zeitform
+    - durch Aggregate ausgelöst
+    handlers:
+    - im Application Layer
+  Application Service:
+    definition: Orchestriert Use Cases über Repositories & Aggregates
+    principles:
+    - keine Geschäftslogik
+    - arbeitet mit Commands
+    structure:
+    - public method per use case
+    - nutzt Domain-Factories
+testing:
+  types:
+    Unit Test: Testet einzelne VO/Entity-Invarianten
+    Integration Test: Testet technische Implementierung (z. B. Repository)
+    Acceptance Test: Testet Application Service auf Use-Case-Level
+  ki_hints:
+  - Generiere VO-Tests für gültig/ungültige Konstruktion
+  - Erzeuge Service-Tests ohne Infrastrukturabhängigkeit
+  - Vermeide Framework-Klassen in Unit Tests
+naming_and_structure:
+  structure:
+    domain/:
+    - model/
+    - repository/
+    application/:
+    - service/
+    - command/
+    infrastructure/:
+    - persistence/
+    - configuration/
+    interface/:
+    - controller/
+  naming:
+    Entities: Singular, z. B. User, Order
+    Value Objects: Semantisch exakt, z. B. Email, Money
+    Events: Vergangenheitsform, z. B. OrderCreatedEvent
+agent_integration:
+  tasks:
+    code_generation: Erzeuge Klassen mit Schicht-typischen Patterns
+    validation_check: VOs auf Invarianten prüfen
+    refactoring: Domainlogik aus Application Layer extrahieren
+    prompt_design: Verwende Struktur Layer → Artefakt → Regel → Beispiel

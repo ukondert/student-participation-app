@@ -19,6 +19,11 @@ abstract class IClassRepository {
   Future<int> addStudent(String firstName, String lastName, String? photoPath, String shortCode, int classId);
   Future<void> updateStudent(Student student);
   Future<void> deleteStudent(int id);
+
+  // Export/Import
+  Future<List<SchoolClass>> getAllClasses();
+  Future<List<Subject>> getAllSubjects();
+  Future<List<Student>> getAllStudents();
 }
 
 // Extended Subject class with class name

@@ -11,6 +11,7 @@ class SubjectStudentsScreen extends ConsumerWidget {
   final int subjectId;
   final String className;
   final String subjectName;
+  final String subjectShortName;
 
   const SubjectStudentsScreen({
     super.key,
@@ -18,6 +19,7 @@ class SubjectStudentsScreen extends ConsumerWidget {
     required this.subjectId,
     required this.className,
     required this.subjectName,
+    required this.subjectShortName,
   });
 
   @override
@@ -26,7 +28,9 @@ class SubjectStudentsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('$subjectName - Schüler'),
+        title: Text(Platform.isWindows 
+            ? '$subjectName - Schüler' 
+            : '$subjectShortName - Schüler'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -7,11 +8,13 @@ import '../providers/providers.dart';
 class StudentParticipationsScreen extends ConsumerStatefulWidget {
   final int studentId;
   final String studentName;
+  final String studentShortCode;
 
   const StudentParticipationsScreen({
     super.key,
     required this.studentId,
     required this.studentName,
+    required this.studentShortCode,
   });
 
   @override
@@ -23,7 +26,9 @@ class _StudentParticipationsScreenState extends ConsumerState<StudentParticipati
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Protokolleinträge - ${widget.studentName}'),
+        title: Text(Platform.isWindows 
+            ? 'Protokolleinträge - ${widget.studentName}' 
+            : 'Protokolleinträge - ${widget.studentShortCode}'),
       ),
       body: FutureBuilder<List<Participation>>(
         future: ref.read(participationRepositoryProvider).getParticipationsForStudent(widget.studentId),

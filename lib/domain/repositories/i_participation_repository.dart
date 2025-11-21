@@ -5,6 +5,7 @@ abstract class IParticipationRepository {
   Stream<List<Participation>> watchParticipations(int studentId, int subjectId);
   Future<List<Participation>> getParticipationsForSubject(int subjectId);
   Future<List<Participation>> getParticipationsForStudent(int studentId);
+  Future<List<Participation>> getAllParticipations();
   Future<int> addParticipation(int studentId, int subjectId, bool isPositive, {String? note, int? behaviorId});
   Future<void> deleteParticipation(int id);
 

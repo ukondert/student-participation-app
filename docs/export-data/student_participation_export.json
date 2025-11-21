@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "timestamp": "2025-11-21T18:00:56.843372",
+  "classes": [
+    {
+      "id": 1,
+      "name": "5AIT",
+      "teacher": "Hochörtler",
+      "room": null,
+      "schoolYear": "2025"
+    }
+  ],
+  "subjects": [
+    {
+      "id": 1,
+      "name": "Programmieren und Softwareentwicklung",
+      "shortName": "POS",
+      "notes": null,
+      "classId": 1
+    },
+    {
+      "id": 2,
+      "name": "Systemplanung und Projektmanagement",
+      "shortName": "SYP",
+      "notes": null,
+      "classId": 1
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "firstName": "Andre",
+      "lastName": "Rath",
+      "photoPath": null,
+      "shortCode": "RAT",
+      "classId": 1
+    },
+    {
+      "id": 2,
+      "firstName": "Nikolei",
+      "lastName": "Schar",
+      "photoPath": null,
+      "shortCode": "C",
+      "classId": 1
+    },
+    {
+      "id": 3,
+      "firstName": "Manuel",
+      "lastName": "Pirkman",
+      "photoPath": null,
+      "shortCode": "PIR",
+      "classId": 1
+    },
+    {
+      "id": 4,
+      "firstName": "Tobias",
+      "lastName": "Sommer",
+      "photoPath": null,
+      "shortCode": "SOM",
+      "classId": 1
+    }
+  ]
+}

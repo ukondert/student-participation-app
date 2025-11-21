@@ -65,6 +65,21 @@ class ParticipationRepositoryImpl implements IParticipationRepository {
   }
 
   @override
+  Future<List<domain.Participation>> getAllParticipations() async {
+    final rows = await _db.select(_db.participations).get();
+    
+    return rows.map((row) => domain.Participation(
+        id: row.id,
+        studentId: row.studentId,
+        subjectId: row.subjectId,
+        date: row.date,
+        isPositive: row.isPositive,
+        note: row.note,
+        behaviorId: row.behaviorId,
+      )).toList();
+  }
+
+  @override
   Future<int> addParticipation(int studentId, int subjectId, bool isPositive, {String? note, int? behaviorId}) {
     return _db.into(_db.participations).insert(db.ParticipationsCompanion.insert(
       studentId: studentId,

@@ -135,3 +135,89 @@ final class ParticipationRepositoryProvider extends $FunctionalProvider<
 
 String _$participationRepositoryHash() =>
     r'852651c1fc5f0012baa5352bb7258f00d30dbd4b';
+
+@ProviderFor(dataExportService)
+const dataExportServiceProvider = DataExportServiceProvider._();
+
+final class DataExportServiceProvider extends $FunctionalProvider<
+    DataExportService,
+    DataExportService,
+    DataExportService> with $Provider<DataExportService> {
+  const DataExportServiceProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'dataExportServiceProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$dataExportServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<DataExportService> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  DataExportService create(Ref ref) {
+    return dataExportService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DataExportService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DataExportService>(value),
+    );
+  }
+}
+
+String _$dataExportServiceHash() => r'6d79d71b030bacd33126505fdf31b26a721af4bc';
+
+@ProviderFor(dataImportService)
+const dataImportServiceProvider = DataImportServiceProvider._();
+
+final class DataImportServiceProvider extends $FunctionalProvider<
+    DataImportService,
+    DataImportService,
+    DataImportService> with $Provider<DataImportService> {
+  const DataImportServiceProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'dataImportServiceProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$dataImportServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<DataImportService> $createElement(
+          $ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  DataImportService create(Ref ref) {
+    return dataImportService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DataImportService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DataImportService>(value),
+    );
+  }
+}
+
+String _$dataImportServiceHash() => r'd5879d99b230485a527aeb71437a684fac54cfae';

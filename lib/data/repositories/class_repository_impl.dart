@@ -143,4 +143,45 @@ class ClassRepositoryImpl implements IClassRepository {
   Future<void> deleteStudent(int id) {
     return (_db.delete(_db.students)..where((tbl) => tbl.id.equals(id))).go();
   }
+
+  // Export/Import
+  @override
+  Future<List<domain.SchoolClass>> getAllClasses() {
+    return _db.select(_db.classes).get().then((rows) {
+      return rows.map((row) => domain.SchoolClass(
+        id: row.id,
+        name: row.name,
+        teacher: row.teacher,
+        room: row.room,
+        schoolYear: row.schoolYear,
+      )).toList();
+    });
+  }
+
+  @override
+  Future<List<domain.Subject>> getAllSubjects() {
+    return _db.select(_db.subjects).get().then((rows) {
+      return rows.map((row) => domain.Subject(
+        id: row.id,
+        name: row.name,
+        shortName: row.shortName,
+        notes: row.notes,
+        classId: row.classId,
+      )).toList();
+    });
+  }
+
+  @override
+  Future<List<domain.Student>> getAllStudents() {
+    return _db.select(_db.students).get().then((rows) {
+      return rows.map((row) => domain.Student(
+        id: row.id,
+        firstName: row.firstName,
+        lastName: row.lastName,
+        photoPath: row.photoPath,
+        shortCode: row.shortCode,
+        classId: row.classId,
+      )).toList();
+    });
+  }
 }

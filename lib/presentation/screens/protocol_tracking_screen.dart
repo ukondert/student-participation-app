@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/entities.dart';
@@ -9,6 +10,7 @@ class ProtocolTrackingScreen extends ConsumerWidget {
   final int subjectId;
   final String className;
   final String subjectName;
+  final String subjectShortName;
 
   const ProtocolTrackingScreen({
     super.key,
@@ -16,6 +18,7 @@ class ProtocolTrackingScreen extends ConsumerWidget {
     required this.subjectId,
     required this.className,
     required this.subjectName,
+    required this.subjectShortName,
   });
 
   @override
@@ -25,7 +28,9 @@ class ProtocolTrackingScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('$className - $subjectName'),
+        title: Text(Platform.isWindows 
+            ? '$className - $subjectName' 
+            : '$className - $subjectShortName'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

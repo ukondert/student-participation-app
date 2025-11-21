@@ -162,6 +162,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                         builder: (_) => StudentParticipationsScreen(
                           studentId: widget.student!.id,
                           studentName: '${widget.student!.firstName} ${widget.student!.lastName}',
+                          studentShortCode: widget.student!.shortCode,
                         ),
                       ),
                     );

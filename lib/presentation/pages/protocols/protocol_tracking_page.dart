@@ -89,14 +89,20 @@ class ProtocolTrackingPage extends ConsumerWidget {
                     onTap: () => _logPositive(context, ref, student),
                     onLongPress: () => _showNegativeMenu(context, ref, student, behaviorsStream),
                     child: Card(
+                      color: _getCardColor(positiveCount, negativeCount),
                       child: Stack(
                         children: [
                           Center(
                             child: CircleAvatar(
                               radius: 40,
+                              backgroundColor: Colors.white,
                               child: Text(
                                 student.shortCode,
-                                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
                           ),
@@ -151,6 +157,39 @@ class ProtocolTrackingPage extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  /// Calculates the card background color based on participation balance
+  /// 
+  /// Positive balance (green shades):
+  /// - +1: Light green
+  /// - +3: Medium green  
+  /// - >=5: Dark green
+  /// 
+  /// Negative balance (red shades):
+  /// - -1: Light red
+  /// - -2: Medium red
+  /// - >=-3: Dark red
+  /// 
+  /// Balanced (0): Neutral gray
+  Color _getCardColor(int positiveCount, int negativeCount) {
+    final difference = positiveCount - negativeCount;
+    
+    if (difference >= 5) {
+      return Colors.green.shade300;
+    } else if (difference >= 3) {
+      return Colors.green.shade200;
+    } else if (difference >= 1) {
+      return Colors.green.shade100;
+    } else if (difference <= -3) {
+      return Colors.red.shade300;
+    } else if (difference <= -2) {
+      return Colors.red.shade200;
+    } else if (difference <= -1) {
+      return Colors.red.shade100;
+    } else {
+      return Colors.grey.shade50;
+    }
   }
 
   void _logPositive(BuildContext context, WidgetRef ref, Student student) {

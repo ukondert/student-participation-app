@@ -1,0 +1,482 @@
+{
+  "version": 1,
+  "timestamp": "2025-11-24T09:51:34.083943",
+  "classes": [
+    {
+      "id": 1,
+      "name": "5AIT",
+      "teacher": "Nowak Lisa",
+      "room": null,
+      "schoolYear": "2025"
+    },
+    {
+      "id": 2,
+      "name": "5BIT",
+      "teacher": "Höchörtler Beatrix",
+      "room": null,
+      "schoolYear": "2025"
+    },
+    {
+      "id": 3,
+      "name": "4RIT",
+      "teacher": "Carmen Gass",
+      "room": null,
+      "schoolYear": "2025"
+    }
+  ],
+  "subjects": [
+    {
+      "id": 1,
+      "name": "Programmieren und Softwareentwicklung",
+      "shortName": "POS",
+      "notes": null,
+      "classId": 1
+    },
+    {
+      "id": 2,
+      "name": "Systemplanung und Projektmanagement",
+      "shortName": "SYP",
+      "notes": null,
+      "classId": 1
+    },
+    {
+      "id": 3,
+      "name": "Systemplanung und Projektmanagement",
+      "shortName": "SYP",
+      "notes": null,
+      "classId": 2
+    },
+    {
+      "id": 4,
+      "name": "Allgemeine Informatik",
+      "shortName": "INFI",
+      "notes": null,
+      "classId": 2
+    },
+    {
+      "id": 5,
+      "name": "Systemplanung und Projektmanagement",
+      "shortName": "SYP",
+      "notes": null,
+      "classId": 3
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "firstName": "Andre",
+      "lastName": "Rath",
+      "photoPath": null,
+      "shortCode": "RAT",
+      "classId": 1
+    },
+    {
+      "id": 2,
+      "firstName": "Nikolei",
+      "lastName": "Schar",
+      "photoPath": null,
+      "shortCode": "C",
+      "classId": 1
+    },
+    {
+      "id": 3,
+      "firstName": "Manuel",
+      "lastName": "Pirkman",
+      "photoPath": null,
+      "shortCode": "PIR",
+      "classId": 1
+    },
+    {
+      "id": 4,
+      "firstName": "Tobias",
+      "lastName": "Sommer",
+      "photoPath": null,
+      "shortCode": "SOM",
+      "classId": 1
+    },
+    {
+      "id": 5,
+      "firstName": "Lukas",
+      "lastName": "Fellegger",
+      "photoPath": null,
+      "shortCode": "FEL",
+      "classId": 2
+    },
+    {
+      "id": 6,
+      "firstName": "Michael",
+      "lastName": "Hänsler",
+      "photoPath": null,
+      "shortCode": "HÄN",
+      "classId": 2
+    },
+    {
+      "id": 7,
+      "firstName": "Tobias",
+      "lastName": "Eichelberger",
+      "photoPath": null,
+      "shortCode": "EIC",
+      "classId": 2
+    },
+    {
+      "id": 8,
+      "firstName": "Florian",
+      "lastName": "Gutmann",
+      "photoPath": null,
+      "shortCode": "GUT",
+      "classId": 2
+    },
+    {
+      "id": 9,
+      "firstName": "Christian",
+      "lastName": "Radlingmayer",
+      "photoPath": null,
+      "shortCode": "RAD",
+      "classId": 2
+    },
+    {
+      "id": 10,
+      "firstName": "Simon",
+      "lastName": "Moser",
+      "photoPath": null,
+      "shortCode": "MOS",
+      "classId": 2
+    },
+    {
+      "id": 11,
+      "firstName": "Benjamin",
+      "lastName": "Muratovic",
+      "photoPath": null,
+      "shortCode": "MUR",
+      "classId": 2
+    },
+    {
+      "id": 12,
+      "firstName": "Elias",
+      "lastName": "Grgic",
+      "photoPath": null,
+      "shortCode": "GRG",
+      "classId": 2
+    },
+    {
+      "id": 13,
+      "firstName": "Nevio",
+      "lastName": "Peißl",
+      "photoPath": null,
+      "shortCode": "PEI",
+      "classId": 2
+    },
+    {
+      "id": 14,
+      "firstName": "Lukas",
+      "lastName": "Macuha",
+      "photoPath": null,
+      "shortCode": "MAC",
+      "classId": 2
+    },
+    {
+      "id": 15,
+      "firstName": "Christian",
+      "lastName": "Kovac",
+      "photoPath": null,
+      "shortCode": "KOV",
+      "classId": 2
+    },
+    {
+      "id": 16,
+      "firstName": "Thys",
+      "lastName": "Schmiedpeter",
+      "photoPath": null,
+      "shortCode": "SCH",
+      "classId": 2
+    },
+    {
+      "id": 17,
+      "firstName": "Chloe",
+      "lastName": "Pripfl",
+      "photoPath": null,
+      "shortCode": "PRI",
+      "classId": 2
+    },
+    {
+      "id": 18,
+      "firstName": "Andrä",
+      "lastName": "Karner",
+      "photoPath": null,
+      "shortCode": "KAR",
+      "classId": 2
+    },
+    {
+      "id": 19,
+      "firstName": "Luan",
+      "lastName": "Lanzmaier",
+      "photoPath": null,
+      "shortCode": "LAN",
+      "classId": 2
+    },
+    {
+      "id": 20,
+      "firstName": "Gabriel",
+      "lastName": "Herbei",
+      "photoPath": null,
+      "shortCode": "HER",
+      "classId": 2
+    },
+    {
+      "id": 21,
+      "firstName": "Nino",
+      "lastName": "Dalipovic",
+      "photoPath": null,
+      "shortCode": "DAL",
+      "classId": 2
+    },
+    {
+      "id": 22,
+      "firstName": "Sebastian",
+      "lastName": "Wolfgruber",
+      "photoPath": null,
+      "shortCode": "WOL",
+      "classId": 2
+    },
+    {
+      "id": 23,
+      "firstName": "Stephan",
+      "lastName": "Dietmair",
+      "photoPath": null,
+      "shortCode": "DIE",
+      "classId": 2
+    },
+    {
+      "id": 24,
+      "firstName": "Fabian",
+      "lastName": "Bacher",
+      "photoPath": null,
+      "shortCode": "BAC",
+      "classId": 2
+    },
+    {
+      "id": 25,
+      "firstName": "Sebastian",
+      "lastName": "Katholnig",
+      "photoPath": null,
+      "shortCode": "KAT",
+      "classId": 1
+    },
+    {
+      "id": 26,
+      "firstName": "Michael",
+      "lastName": "Zorn",
+      "photoPath": null,
+      "shortCode": "ZOR",
+      "classId": 1
+    },
+    {
+      "id": 27,
+      "firstName": "Felix",
+      "lastName": "Maierhofer",
+      "photoPath": null,
+      "shortCode": "MAI",
+      "classId": 1
+    },
+    {
+      "id": 28,
+      "firstName": "David",
+      "lastName": "Iszovits",
+      "photoPath": null,
+      "shortCode": "ISZ",
+      "classId": 1
+    },
+    {
+      "id": 29,
+      "firstName": "Marvin",
+      "lastName": "Luschenz",
+      "photoPath": null,
+      "shortCode": "LUS",
+      "classId": 1
+    },
+    {
+      "id": 30,
+      "firstName": "Christian",
+      "lastName": "Beichtbuchner",
+      "photoPath": null,
+      "shortCode": "BEI",
+      "classId": 1
+    },
+    {
+      "id": 31,
+      "firstName": "Nikola",
+      "lastName": "Maksic",
+      "photoPath": null,
+      "shortCode": "MAK",
+      "classId": 1
+    },
+    {
+      "id": 32,
+      "firstName": "Benjamin",
+      "lastName": "Leitner",
+      "photoPath": null,
+      "shortCode": "LEI",
+      "classId": 1
+    },
+    {
+      "id": 33,
+      "firstName": "Marvin",
+      "lastName": "Winter",
+      "photoPath": null,
+      "shortCode": "WIN",
+      "classId": 1
+    },
+    {
+      "id": 34,
+      "firstName": "Janik",
+      "lastName": "Gierer",
+      "photoPath": null,
+      "shortCode": "GIE",
+      "classId": 1
+    },
+    {
+      "id": 35,
+      "firstName": "Marsel",
+      "lastName": "Papic",
+      "photoPath": null,
+      "shortCode": "PAP",
+      "classId": 1
+    },
+    {
+      "id": 36,
+      "firstName": "Alexander",
+      "lastName": "Schüller",
+      "photoPath": null,
+      "shortCode": "SCÜ",
+      "classId": 1
+    },
+    {
+      "id": 37,
+      "firstName": "Fabian",
+      "lastName": "Erdkönig",
+      "photoPath": null,
+      "shortCode": "ERD",
+      "classId": 1
+    },
+    {
+      "id": 38,
+      "firstName": "Florian",
+      "lastName": "Hochleitner",
+      "photoPath": null,
+      "shortCode": "HOC",
+      "classId": 1
+    },
+    {
+      "id": 39,
+      "firstName": "Eric",
+      "lastName": "Schuster",
+      "photoPath": null,
+      "shortCode": "SCU",
+      "classId": 1
+    },
+    {
+      "id": 40,
+      "firstName": "Mario",
+      "lastName": "Ziegerhofer",
+      "photoPath": null,
+      "shortCode": "ZIE",
+      "classId": 1
+    },
+    {
+      "id": 41,
+      "firstName": "Amadeo",
+      "lastName": "Wieser-Hulsz",
+      "photoPath": null,
+      "shortCode": "WIE",
+      "classId": 1
+    },
+    {
+      "id": 42,
+      "firstName": "Moritz",
+      "lastName": "Zugai",
+      "photoPath": null,
+      "shortCode": "ZUG",
+      "classId": 1
+    },
+    {
+      "id": 43,
+      "firstName": "Biser",
+      "lastName": "Biserov",
+      "photoPath": null,
+      "shortCode": "BIS",
+      "classId": 3
+    },
+    {
+      "id": 44,
+      "firstName": "Andreas",
+      "lastName": "Goldbrunner",
+      "photoPath": null,
+      "shortCode": "GOL",
+      "classId": 3
+    },
+    {
+      "id": 45,
+      "firstName": "Lukas",
+      "lastName": "Hamburger",
+      "photoPath": null,
+      "shortCode": "HAM",
+      "classId": 3
+    },
+    {
+      "id": 46,
+      "firstName": "Tobias",
+      "lastName": "Judmaier",
+      "photoPath": null,
+      "shortCode": "JUD",
+      "classId": 3
+    },
+    {
+      "id": 47,
+      "firstName": "Jason",
+      "lastName": "Kalus",
+      "photoPath": null,
+      "shortCode": "KAL",
+      "classId": 3
+    },
+    {
+      "id": 48,
+      "firstName": "Fabian",
+      "lastName": "Leitner",
+      "photoPath": null,
+      "shortCode": "LEI",
+      "classId": 3
+    },
+    {
+      "id": 49,
+      "firstName": "Leopold",
+      "lastName": "Maier",
+      "photoPath": null,
+      "shortCode": "MAI",
+      "classId": 3
+    },
+    {
+      "id": 50,
+      "firstName": "Patryk",
+      "lastName": "Motyka",
+      "photoPath": null,
+      "shortCode": "MOT",
+      "classId": 3
+    },
+    {
+      "id": 51,
+      "firstName": "Peter",
+      "lastName": "Rappold",
+      "photoPath": null,
+      "shortCode": "RAP",
+      "classId": 3
+    },
+    {
+      "id": 52,
+      "firstName": "Lukas",
+      "lastName": "Ritzinger",
+      "photoPath": null,
+      "shortCode": "RIT",
+      "classId": 3
+    }
+  ]
+}

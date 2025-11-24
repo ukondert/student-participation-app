@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import '../../data/datasources/database.dart' as db;
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -145,6 +146,12 @@ class SettingsScreen extends ConsumerWidget {
               }
             },
           ),
+          const Divider(),
+          ListTile(
+            title: const Text('Alle Daten löschen', style: TextStyle(color: Colors.red)),
+            leading: const Icon(Icons.delete_forever, color: Colors.red),
+            onTap: () => _showDeleteAllDataDialog(context, ref),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -177,6 +184,109 @@ class SettingsScreen extends ConsumerWidget {
               }
             },
             child: const Text('Hinzufügen'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteAllDataDialog(BuildContext context, WidgetRef ref) {
+    final controller = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Alle Daten löschen', style: TextStyle(color: Colors.red)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'WARNUNG: Diese Aktion löscht ALLE Daten unwiderruflich!\n\nDies umfasst:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text('• Alle Klassen'),
+            const Text('• Alle Fächer'),
+            const Text('• Alle Schüler'),
+            const Text('• Alle Teilnahmen'),
+            const Text('• Alle negativen Verhaltensweisen'),
+            const SizedBox(height: 16),
+            const Text(
+              'Geben Sie "DELETE" ein, um zu bestätigen:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                labelText: 'DELETE eingeben',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Abbrechen'),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (controller.text == 'DELETE') {
+                Navigator.pop(context);
+                try {
+                  final database = ref.read(appDatabaseProvider);
+                  await database.transaction(() async {
+                    await database.delete(database.participations).go();
+                    await database.delete(database.students).go();
+                    await database.delete(database.subjects).go();
+                    await database.delete(database.classes).go();
+                    await database.delete(database.negativeBehaviors).go();
+                    
+                    // Standard-Verhaltensweisen wieder einfügen
+                    await database.into(database.negativeBehaviors).insert(
+                      db.NegativeBehaviorsCompanion.insert(description: 'Stört den Unterricht'),
+                    );
+                    await database.into(database.negativeBehaviors).insert(
+                      db.NegativeBehaviorsCompanion.insert(description: 'Hausübung fehlt'),
+                    );
+                    await database.into(database.negativeBehaviors).insert(
+                      db.NegativeBehaviorsCompanion.insert(description: 'Material fehlt'),
+                    );
+                    await database.into(database.negativeBehaviors).insert(
+                      db.NegativeBehaviorsCompanion.insert(description: 'Zuspätkommen'),
+                    );
+                  });
+                  
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Alle Daten wurden erfolgreich gelöscht'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Fehler beim Löschen: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Bitte geben Sie "DELETE" ein, um zu bestätigen'),
+                    backgroundColor: Colors.orange,
+                  ),
+                );
+              }
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('LÖSCHEN'),
           ),
         ],
       ),

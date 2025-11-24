@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/subject_list_widget.dart';
-import 'subject_students_screen.dart';
+import '../pages/students/student_list_page.dart';
 import 'settings_screen.dart';
 
 class AllSubjectsScreen extends ConsumerWidget {
@@ -30,12 +30,11 @@ class AllSubjectsScreen extends ConsumerWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => SubjectStudentsScreen(
+              builder: (_) => StudentListPage(
                 classId: subject.classId,
                 subjectId: subject.id,
                 className: schoolClass?.name ?? '',
                 subjectName: subject.name,
-                subjectShortName: subject.shortName,
               ),
             ),
           );

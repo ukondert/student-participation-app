@@ -9,12 +9,14 @@ class StudentListWidget extends StatelessWidget {
   final List<Student> students;
   final int classId;
   final Function(Student) onStudentTap;
+  final Function(Student) onEdit;
 
   const StudentListWidget({
     super.key,
     required this.students,
     required this.classId,
     required this.onStudentTap,
+    required this.onEdit,
   });
 
   @override
@@ -41,7 +43,10 @@ class StudentListWidget extends StatelessWidget {
             ),
             title: Text('${student.firstName} ${student.lastName}'),
             subtitle: Text('Kürzel: ${student.shortCode}'),
-            trailing: const Icon(Icons.edit),
+            trailing: IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => onEdit(student),
+            ),
             onTap: () => onStudentTap(student),
           ),
         );

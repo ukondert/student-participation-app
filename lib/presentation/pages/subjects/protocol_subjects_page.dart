@@ -1,35 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../widgets/subject_list_widget.dart';
-import 'protocol_tracking_screen.dart';
-import 'settings_screen.dart';
+import '../../templates/list_page_template.dart';
+import '../../widgets/subject_list_widget.dart';
+import '../protocols/protocol_tracking_page.dart';
+import '../settings/settings_page.dart';
 
-class ProtocolSubjectsScreen extends ConsumerWidget {
-  const ProtocolSubjectsScreen({super.key});
+class ProtocolSubjectsPage extends ConsumerWidget {
+  const ProtocolSubjectsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Protokoll'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: SubjectListWidget(
+    return ListPageTemplate(
+      title: 'Protokoll',
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsPage()),
+            );
+          },
+        ),
+      ],
+      list: SubjectListWidget(
         onSubjectTap: (context, subject, schoolClass) {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => ProtocolTrackingScreen(
+              builder: (_) => ProtocolTrackingPage(
                 classId: subject.classId,
                 subjectId: subject.id,
                 className: schoolClass?.name ?? '',

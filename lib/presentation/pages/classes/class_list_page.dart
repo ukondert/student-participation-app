@@ -6,7 +6,8 @@ import '../../molecules/states/state_components.dart';
 import '../../providers/providers.dart';
 import 'class_form_page.dart';
 import '../subjects/subject_list_page.dart';
-import '../../screens/settings_screen.dart';
+import '../settings/settings_page.dart';
+
 
 /// Class List Page
 /// 
@@ -106,7 +107,7 @@ class ClassListPage extends ConsumerWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const SettingsScreen(),
+        builder: (_) => const SettingsPage(),
       ),
     );
   }

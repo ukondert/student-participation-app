@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:student_participation_app/domain/entities/entities.dart';
 import 'package:student_participation_app/presentation/atoms/buttons/primary_button.dart';
 import 'package:student_participation_app/presentation/providers/providers.dart';
-import 'package:student_participation_app/presentation/screens/student_participations_screen.dart';
+import 'package:student_participation_app/presentation/pages/students/student_participations_page.dart';
 import 'package:student_participation_app/presentation/templates/form_page_template.dart';
 
 class StudentFormPage extends ConsumerStatefulWidget {
@@ -159,7 +159,7 @@ class _StudentFormPageState extends ConsumerState<StudentFormPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => StudentParticipationsScreen(
+                      builder: (_) => StudentParticipationsPage(
                         studentId: widget.student!.id,
                         studentName:
                             '${widget.student!.firstName} ${widget.student!.lastName}',

@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../organisms/navigation/custom_bottom_nav.dart';
 import 'classes/class_list_page.dart';
-import '../screens/all_subjects_screen.dart';
-import '../screens/protocol_subjects_screen.dart';
-import '../screens/export_subjects_screen.dart';
+import 'subjects/all_subjects_page.dart';
+import 'subjects/protocol_subjects_page.dart';
+import 'subjects/export_subjects_page.dart';
 
-/// Main Page
-/// 
-/// The main shell of the application, providing the bottom navigation
-/// and switching between the main content pages.
 class MainPage extends ConsumerStatefulWidget {
   const MainPage({super.key});
 
@@ -18,45 +14,36 @@ class MainPage extends ConsumerStatefulWidget {
 }
 
 class _MainPageState extends ConsumerState<MainPage> {
-  int _selectedIndex = 0;
+  int _currentIndex = 0;
 
-  final List<Widget> _pages = const [
-    ClassListPage(),
-    AllSubjectsScreen(),
-    ProtocolSubjectsScreen(),
-    ExportSubjectsScreen(),
+  final List<Widget> _pages = [
+    const ClassListPage(),
+    const AllSubjectsPage(),
+    const ProtocolSubjectsPage(),
+    const ExportSubjectsPage(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _currentIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: CustomBottomNav(
-        currentIndex: _selectedIndex,
+        currentIndex: _currentIndex,
         onTap: _onItemTapped,
-        items: [
-          NavItem(
-            icon: Icons.school,
-            label: 'Klasse',
-          ),
-          NavItem(
-            icon: Icons.book,
-            label: 'Fächer',
-          ),
-          NavItem(
-            icon: Icons.assignment,
-            label: 'Protokoll',
-          ),
-          NavItem(
-            icon: Icons.file_download,
-            label: 'Export',
-          ),
+        items: const [
+          NavItem(icon: Icons.school, label: 'Klassen'),
+          NavItem(icon: Icons.book, label: 'Fächer'),
+          NavItem(icon: Icons.assignment, label: 'Protokoll'),
+          NavItem(icon: Icons.download, label: 'Export'),
         ],
       ),
     );

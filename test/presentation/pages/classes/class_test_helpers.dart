@@ -124,5 +124,5 @@ class MockClassRepository implements IClassRepository {
   @override
   Future<List<Subject>> getAllSubjects() async => [];
   @override
-  Stream<List<Subject>> watchAllSubjects() => const Stream.empty();
+  Stream<List<Subject>> watchAllSubjects() => _subjectsController.stream;
 }

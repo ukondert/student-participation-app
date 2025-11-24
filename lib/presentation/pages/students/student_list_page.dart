@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_participation_app/core/utils/csv_exporter.dart';
 import 'package:student_participation_app/domain/entities/entities.dart';
 import 'package:student_participation_app/presentation/molecules/states/state_components.dart';
+import 'package:student_participation_app/presentation/pages/students/student_detail_page.dart';
 import 'package:student_participation_app/presentation/pages/students/student_form_page.dart';
 import 'package:student_participation_app/presentation/providers/providers.dart';
 import 'package:student_participation_app/presentation/templates/list_page_template.dart';
@@ -64,12 +65,25 @@ class StudentListPage extends ConsumerWidget {
           return StudentListWidget(
             students: students,
             classId: classId,
-            onStudentTap: (student) => _navigateToStudentForm(context, student),
+            onStudentTap: (student) => _navigateToStudentDetail(context, student),
+            onEdit: (student) => _navigateToStudentForm(context, student),
           );
         },
       ),
       onAdd: () => _navigateToStudentForm(context, null),
       addButtonLabel: 'Schüler hinzufügen',
+    );
+  }
+
+  void _navigateToStudentDetail(BuildContext context, Student student) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => StudentDetailPage(
+          student: student,
+          subjectId: subjectId,
+        ),
+      ),
     );
   }
 

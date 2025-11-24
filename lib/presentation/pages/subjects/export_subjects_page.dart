@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/entities/entities.dart';
-import '../providers/providers.dart';
-import '../widgets/subject_list_widget.dart';
-import '../../core/utils/csv_exporter.dart';
-import 'settings_screen.dart';
+import '../../templates/list_page_template.dart';
+import '../../widgets/subject_list_widget.dart';
+import '../../../core/utils/csv_exporter.dart';
+import '../settings/settings_page.dart';
+import '../../../domain/entities/entities.dart';
+import '../../providers/providers.dart';
 
-class ExportSubjectsScreen extends ConsumerWidget {
-  const ExportSubjectsScreen({super.key});
+class ExportSubjectsPage extends ConsumerWidget {
+  const ExportSubjectsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Export'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: SubjectListWidget(
+    return ListPageTemplate(
+      title: 'Export',
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsPage()),
+            );
+          },
+        ),
+      ],
+      list: SubjectListWidget(
         leadingBuilder: (_) => const Icon(Icons.download, color: Colors.blue),
         onSubjectTap: (context, subject, schoolClass) {
           _exportSubjectData(context, ref, subject, schoolClass);

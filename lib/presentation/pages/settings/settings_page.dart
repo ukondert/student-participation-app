@@ -9,7 +9,7 @@ import '../../../data/datasources/database.dart' as db;
 import '../../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
 import '../../templates/base_page_template.dart';
-import '../../widgets/export_import_dialog.dart';
+import '../../organisms/dialogs/export_import_dialog.dart';
 
 class SettingsPage extends ConsumerWidget {
   const SettingsPage({super.key});
@@ -104,7 +104,10 @@ class SettingsPage extends ConsumerWidget {
            await file.writeAsString(jsonString);
            if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Daten erfolgreich exportiert')),
+                const SnackBar(
+                  content: Text('Daten erfolgreich exportiert'),
+                  backgroundColor: Colors.green,
+                ),
               );
            }
         }
@@ -112,12 +115,17 @@ class SettingsPage extends ConsumerWidget {
          final directory = await getApplicationDocumentsDirectory();
          final file = File('${directory.path}/student_participation_export.json');
          await file.writeAsString(jsonString);
-         await Share.shareXFiles([XFile(file.path)], text: 'Student Participation Data Export');
+         await Share.shareXFiles([
+           XFile(file.path)
+         ], text: 'Student Participation Data Export');
       }
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Fehler beim Exportieren: $e')),
+          SnackBar(
+            content: Text('Fehler beim Exportieren: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -150,7 +158,10 @@ class SettingsPage extends ConsumerWidget {
             );
             if (context.mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Daten erfolgreich importiert')),
+                const SnackBar(
+                  content: Text('Daten erfolgreich importiert'),
+                  backgroundColor: Colors.green,
+                ),
               );
             }
           }
@@ -159,7 +170,10 @@ class SettingsPage extends ConsumerWidget {
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Fehler beim Importieren: $e')),
+          SnackBar(
+            content: Text('Fehler beim Importieren: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }
@@ -216,7 +230,7 @@ class SettingsPage extends ConsumerWidget {
             const Text('• Alle negativen Verhaltensweisen'),
             const SizedBox(height: 16),
             const Text(
-              'Geben Sie \"DELETE\" ein, um zu bestätigen:',
+              'Geben Sie "DELETE" ein, um zu bestätigen:',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
@@ -283,8 +297,7 @@ class SettingsPage extends ConsumerWidget {
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Bitte geben Sie \"DELETE\" ein, um zu bestätigen'),
-                    backgroundColor: Colors.orange,
+                    content: Text('Bitte geben Sie "DELETE" ein, um zu bestätigen'),
                   ),
                 );
               }

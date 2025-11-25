@@ -1,5 +1,4 @@
 import 'dart:convert';
-import '../../domain/entities/entities.dart';
 import '../../domain/repositories/i_class_repository.dart';
 import '../../domain/repositories/i_participation_repository.dart';
 
@@ -49,6 +48,7 @@ class DataExportService {
           'isPositive': p.isPositive,
           'note': p.note,
           'behaviorId': p.behaviorId,
+          'sessionId': p.sessionId,
         }).toList(),
     };
 

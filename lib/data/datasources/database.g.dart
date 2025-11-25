@@ -1125,6 +1125,383 @@ class NegativeBehaviorsCompanion extends UpdateCompanion<NegativeBehavior> {
   }
 }
 
+class $ProtocolSessionsTable extends ProtocolSessions
+    with TableInfo<$ProtocolSessionsTable, ProtocolSession> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProtocolSessionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _subjectIdMeta =
+      const VerificationMeta('subjectId');
+  @override
+  late final GeneratedColumn<int> subjectId = GeneratedColumn<int>(
+      'subject_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES subjects (id) ON DELETE CASCADE'));
+  static const VerificationMeta _startTimeMeta =
+      const VerificationMeta('startTime');
+  @override
+  late final GeneratedColumn<DateTime> startTime = GeneratedColumn<DateTime>(
+      'start_time', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _endTimeMeta =
+      const VerificationMeta('endTime');
+  @override
+  late final GeneratedColumn<DateTime> endTime = GeneratedColumn<DateTime>(
+      'end_time', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _topicMeta = const VerificationMeta('topic');
+  @override
+  late final GeneratedColumn<String> topic = GeneratedColumn<String>(
+      'topic', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+      'notes', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _homeworkMeta =
+      const VerificationMeta('homework');
+  @override
+  late final GeneratedColumn<String> homework = GeneratedColumn<String>(
+      'homework', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, subjectId, startTime, endTime, topic, notes, homework];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'protocol_sessions';
+  @override
+  VerificationContext validateIntegrity(Insertable<ProtocolSession> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('subject_id')) {
+      context.handle(_subjectIdMeta,
+          subjectId.isAcceptableOrUnknown(data['subject_id']!, _subjectIdMeta));
+    } else if (isInserting) {
+      context.missing(_subjectIdMeta);
+    }
+    if (data.containsKey('start_time')) {
+      context.handle(_startTimeMeta,
+          startTime.isAcceptableOrUnknown(data['start_time']!, _startTimeMeta));
+    } else if (isInserting) {
+      context.missing(_startTimeMeta);
+    }
+    if (data.containsKey('end_time')) {
+      context.handle(_endTimeMeta,
+          endTime.isAcceptableOrUnknown(data['end_time']!, _endTimeMeta));
+    }
+    if (data.containsKey('topic')) {
+      context.handle(
+          _topicMeta, topic.isAcceptableOrUnknown(data['topic']!, _topicMeta));
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+          _notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
+    if (data.containsKey('homework')) {
+      context.handle(_homeworkMeta,
+          homework.isAcceptableOrUnknown(data['homework']!, _homeworkMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProtocolSession map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProtocolSession(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      subjectId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}subject_id'])!,
+      startTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}start_time'])!,
+      endTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}end_time']),
+      topic: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}topic']),
+      notes: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}notes']),
+      homework: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}homework']),
+    );
+  }
+
+  @override
+  $ProtocolSessionsTable createAlias(String alias) {
+    return $ProtocolSessionsTable(attachedDatabase, alias);
+  }
+}
+
+class ProtocolSession extends DataClass implements Insertable<ProtocolSession> {
+  final int id;
+  final int subjectId;
+  final DateTime startTime;
+  final DateTime? endTime;
+  final String? topic;
+  final String? notes;
+  final String? homework;
+  const ProtocolSession(
+      {required this.id,
+      required this.subjectId,
+      required this.startTime,
+      this.endTime,
+      this.topic,
+      this.notes,
+      this.homework});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['subject_id'] = Variable<int>(subjectId);
+    map['start_time'] = Variable<DateTime>(startTime);
+    if (!nullToAbsent || endTime != null) {
+      map['end_time'] = Variable<DateTime>(endTime);
+    }
+    if (!nullToAbsent || topic != null) {
+      map['topic'] = Variable<String>(topic);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || homework != null) {
+      map['homework'] = Variable<String>(homework);
+    }
+    return map;
+  }
+
+  ProtocolSessionsCompanion toCompanion(bool nullToAbsent) {
+    return ProtocolSessionsCompanion(
+      id: Value(id),
+      subjectId: Value(subjectId),
+      startTime: Value(startTime),
+      endTime: endTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(endTime),
+      topic:
+          topic == null && nullToAbsent ? const Value.absent() : Value(topic),
+      notes:
+          notes == null && nullToAbsent ? const Value.absent() : Value(notes),
+      homework: homework == null && nullToAbsent
+          ? const Value.absent()
+          : Value(homework),
+    );
+  }
+
+  factory ProtocolSession.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProtocolSession(
+      id: serializer.fromJson<int>(json['id']),
+      subjectId: serializer.fromJson<int>(json['subjectId']),
+      startTime: serializer.fromJson<DateTime>(json['startTime']),
+      endTime: serializer.fromJson<DateTime?>(json['endTime']),
+      topic: serializer.fromJson<String?>(json['topic']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      homework: serializer.fromJson<String?>(json['homework']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'subjectId': serializer.toJson<int>(subjectId),
+      'startTime': serializer.toJson<DateTime>(startTime),
+      'endTime': serializer.toJson<DateTime?>(endTime),
+      'topic': serializer.toJson<String?>(topic),
+      'notes': serializer.toJson<String?>(notes),
+      'homework': serializer.toJson<String?>(homework),
+    };
+  }
+
+  ProtocolSession copyWith(
+          {int? id,
+          int? subjectId,
+          DateTime? startTime,
+          Value<DateTime?> endTime = const Value.absent(),
+          Value<String?> topic = const Value.absent(),
+          Value<String?> notes = const Value.absent(),
+          Value<String?> homework = const Value.absent()}) =>
+      ProtocolSession(
+        id: id ?? this.id,
+        subjectId: subjectId ?? this.subjectId,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime.present ? endTime.value : this.endTime,
+        topic: topic.present ? topic.value : this.topic,
+        notes: notes.present ? notes.value : this.notes,
+        homework: homework.present ? homework.value : this.homework,
+      );
+  ProtocolSession copyWithCompanion(ProtocolSessionsCompanion data) {
+    return ProtocolSession(
+      id: data.id.present ? data.id.value : this.id,
+      subjectId: data.subjectId.present ? data.subjectId.value : this.subjectId,
+      startTime: data.startTime.present ? data.startTime.value : this.startTime,
+      endTime: data.endTime.present ? data.endTime.value : this.endTime,
+      topic: data.topic.present ? data.topic.value : this.topic,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      homework: data.homework.present ? data.homework.value : this.homework,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProtocolSession(')
+          ..write('id: $id, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('topic: $topic, ')
+          ..write('notes: $notes, ')
+          ..write('homework: $homework')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, subjectId, startTime, endTime, topic, notes, homework);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProtocolSession &&
+          other.id == this.id &&
+          other.subjectId == this.subjectId &&
+          other.startTime == this.startTime &&
+          other.endTime == this.endTime &&
+          other.topic == this.topic &&
+          other.notes == this.notes &&
+          other.homework == this.homework);
+}
+
+class ProtocolSessionsCompanion extends UpdateCompanion<ProtocolSession> {
+  final Value<int> id;
+  final Value<int> subjectId;
+  final Value<DateTime> startTime;
+  final Value<DateTime?> endTime;
+  final Value<String?> topic;
+  final Value<String?> notes;
+  final Value<String?> homework;
+  const ProtocolSessionsCompanion({
+    this.id = const Value.absent(),
+    this.subjectId = const Value.absent(),
+    this.startTime = const Value.absent(),
+    this.endTime = const Value.absent(),
+    this.topic = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.homework = const Value.absent(),
+  });
+  ProtocolSessionsCompanion.insert({
+    this.id = const Value.absent(),
+    required int subjectId,
+    required DateTime startTime,
+    this.endTime = const Value.absent(),
+    this.topic = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.homework = const Value.absent(),
+  })  : subjectId = Value(subjectId),
+        startTime = Value(startTime);
+  static Insertable<ProtocolSession> custom({
+    Expression<int>? id,
+    Expression<int>? subjectId,
+    Expression<DateTime>? startTime,
+    Expression<DateTime>? endTime,
+    Expression<String>? topic,
+    Expression<String>? notes,
+    Expression<String>? homework,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (subjectId != null) 'subject_id': subjectId,
+      if (startTime != null) 'start_time': startTime,
+      if (endTime != null) 'end_time': endTime,
+      if (topic != null) 'topic': topic,
+      if (notes != null) 'notes': notes,
+      if (homework != null) 'homework': homework,
+    });
+  }
+
+  ProtocolSessionsCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? subjectId,
+      Value<DateTime>? startTime,
+      Value<DateTime?>? endTime,
+      Value<String?>? topic,
+      Value<String?>? notes,
+      Value<String?>? homework}) {
+    return ProtocolSessionsCompanion(
+      id: id ?? this.id,
+      subjectId: subjectId ?? this.subjectId,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      topic: topic ?? this.topic,
+      notes: notes ?? this.notes,
+      homework: homework ?? this.homework,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (subjectId.present) {
+      map['subject_id'] = Variable<int>(subjectId.value);
+    }
+    if (startTime.present) {
+      map['start_time'] = Variable<DateTime>(startTime.value);
+    }
+    if (endTime.present) {
+      map['end_time'] = Variable<DateTime>(endTime.value);
+    }
+    if (topic.present) {
+      map['topic'] = Variable<String>(topic.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (homework.present) {
+      map['homework'] = Variable<String>(homework.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProtocolSessionsCompanion(')
+          ..write('id: $id, ')
+          ..write('subjectId: $subjectId, ')
+          ..write('startTime: $startTime, ')
+          ..write('endTime: $endTime, ')
+          ..write('topic: $topic, ')
+          ..write('notes: $notes, ')
+          ..write('homework: $homework')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ParticipationsTable extends Participations
     with TableInfo<$ParticipationsTable, Participation> {
   @override
@@ -1186,9 +1563,18 @@ class $ParticipationsTable extends Participations
       requiredDuringInsert: false,
       defaultConstraints: GeneratedColumn.constraintIsAlways(
           'REFERENCES negative_behaviors (id)'));
+  static const VerificationMeta _sessionIdMeta =
+      const VerificationMeta('sessionId');
+  @override
+  late final GeneratedColumn<int> sessionId = GeneratedColumn<int>(
+      'session_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES protocol_sessions (id) ON DELETE SET NULL'));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, studentId, subjectId, date, isPositive, note, behaviorId];
+      [id, studentId, subjectId, date, isPositive, note, behaviorId, sessionId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1238,6 +1624,10 @@ class $ParticipationsTable extends Participations
           behaviorId.isAcceptableOrUnknown(
               data['behavior_id']!, _behaviorIdMeta));
     }
+    if (data.containsKey('session_id')) {
+      context.handle(_sessionIdMeta,
+          sessionId.isAcceptableOrUnknown(data['session_id']!, _sessionIdMeta));
+    }
     return context;
   }
 
@@ -1261,6 +1651,8 @@ class $ParticipationsTable extends Participations
           .read(DriftSqlType.string, data['${effectivePrefix}note']),
       behaviorId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}behavior_id']),
+      sessionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}session_id']),
     );
   }
 
@@ -1278,6 +1670,7 @@ class Participation extends DataClass implements Insertable<Participation> {
   final bool isPositive;
   final String? note;
   final int? behaviorId;
+  final int? sessionId;
   const Participation(
       {required this.id,
       required this.studentId,
@@ -1285,7 +1678,8 @@ class Participation extends DataClass implements Insertable<Participation> {
       required this.date,
       required this.isPositive,
       this.note,
-      this.behaviorId});
+      this.behaviorId,
+      this.sessionId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1299,6 +1693,9 @@ class Participation extends DataClass implements Insertable<Participation> {
     }
     if (!nullToAbsent || behaviorId != null) {
       map['behavior_id'] = Variable<int>(behaviorId);
+    }
+    if (!nullToAbsent || sessionId != null) {
+      map['session_id'] = Variable<int>(sessionId);
     }
     return map;
   }
@@ -1314,6 +1711,9 @@ class Participation extends DataClass implements Insertable<Participation> {
       behaviorId: behaviorId == null && nullToAbsent
           ? const Value.absent()
           : Value(behaviorId),
+      sessionId: sessionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sessionId),
     );
   }
 
@@ -1328,6 +1728,7 @@ class Participation extends DataClass implements Insertable<Participation> {
       isPositive: serializer.fromJson<bool>(json['isPositive']),
       note: serializer.fromJson<String?>(json['note']),
       behaviorId: serializer.fromJson<int?>(json['behaviorId']),
+      sessionId: serializer.fromJson<int?>(json['sessionId']),
     );
   }
   @override
@@ -1341,6 +1742,7 @@ class Participation extends DataClass implements Insertable<Participation> {
       'isPositive': serializer.toJson<bool>(isPositive),
       'note': serializer.toJson<String?>(note),
       'behaviorId': serializer.toJson<int?>(behaviorId),
+      'sessionId': serializer.toJson<int?>(sessionId),
     };
   }
 
@@ -1351,7 +1753,8 @@ class Participation extends DataClass implements Insertable<Participation> {
           DateTime? date,
           bool? isPositive,
           Value<String?> note = const Value.absent(),
-          Value<int?> behaviorId = const Value.absent()}) =>
+          Value<int?> behaviorId = const Value.absent(),
+          Value<int?> sessionId = const Value.absent()}) =>
       Participation(
         id: id ?? this.id,
         studentId: studentId ?? this.studentId,
@@ -1360,6 +1763,7 @@ class Participation extends DataClass implements Insertable<Participation> {
         isPositive: isPositive ?? this.isPositive,
         note: note.present ? note.value : this.note,
         behaviorId: behaviorId.present ? behaviorId.value : this.behaviorId,
+        sessionId: sessionId.present ? sessionId.value : this.sessionId,
       );
   Participation copyWithCompanion(ParticipationsCompanion data) {
     return Participation(
@@ -1372,6 +1776,7 @@ class Participation extends DataClass implements Insertable<Participation> {
       note: data.note.present ? data.note.value : this.note,
       behaviorId:
           data.behaviorId.present ? data.behaviorId.value : this.behaviorId,
+      sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
     );
   }
 
@@ -1384,14 +1789,15 @@ class Participation extends DataClass implements Insertable<Participation> {
           ..write('date: $date, ')
           ..write('isPositive: $isPositive, ')
           ..write('note: $note, ')
-          ..write('behaviorId: $behaviorId')
+          ..write('behaviorId: $behaviorId, ')
+          ..write('sessionId: $sessionId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, studentId, subjectId, date, isPositive, note, behaviorId);
+  int get hashCode => Object.hash(
+      id, studentId, subjectId, date, isPositive, note, behaviorId, sessionId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1402,7 +1808,8 @@ class Participation extends DataClass implements Insertable<Participation> {
           other.date == this.date &&
           other.isPositive == this.isPositive &&
           other.note == this.note &&
-          other.behaviorId == this.behaviorId);
+          other.behaviorId == this.behaviorId &&
+          other.sessionId == this.sessionId);
 }
 
 class ParticipationsCompanion extends UpdateCompanion<Participation> {
@@ -1413,6 +1820,7 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
   final Value<bool> isPositive;
   final Value<String?> note;
   final Value<int?> behaviorId;
+  final Value<int?> sessionId;
   const ParticipationsCompanion({
     this.id = const Value.absent(),
     this.studentId = const Value.absent(),
@@ -1421,6 +1829,7 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
     this.isPositive = const Value.absent(),
     this.note = const Value.absent(),
     this.behaviorId = const Value.absent(),
+    this.sessionId = const Value.absent(),
   });
   ParticipationsCompanion.insert({
     this.id = const Value.absent(),
@@ -1430,6 +1839,7 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
     required bool isPositive,
     this.note = const Value.absent(),
     this.behaviorId = const Value.absent(),
+    this.sessionId = const Value.absent(),
   })  : studentId = Value(studentId),
         subjectId = Value(subjectId),
         date = Value(date),
@@ -1442,6 +1852,7 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
     Expression<bool>? isPositive,
     Expression<String>? note,
     Expression<int>? behaviorId,
+    Expression<int>? sessionId,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1451,6 +1862,7 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
       if (isPositive != null) 'is_positive': isPositive,
       if (note != null) 'note': note,
       if (behaviorId != null) 'behavior_id': behaviorId,
+      if (sessionId != null) 'session_id': sessionId,
     });
   }
 
@@ -1461,7 +1873,8 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
       Value<DateTime>? date,
       Value<bool>? isPositive,
       Value<String?>? note,
-      Value<int?>? behaviorId}) {
+      Value<int?>? behaviorId,
+      Value<int?>? sessionId}) {
     return ParticipationsCompanion(
       id: id ?? this.id,
       studentId: studentId ?? this.studentId,
@@ -1470,6 +1883,7 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
       isPositive: isPositive ?? this.isPositive,
       note: note ?? this.note,
       behaviorId: behaviorId ?? this.behaviorId,
+      sessionId: sessionId ?? this.sessionId,
     );
   }
 
@@ -1497,6 +1911,9 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
     if (behaviorId.present) {
       map['behavior_id'] = Variable<int>(behaviorId.value);
     }
+    if (sessionId.present) {
+      map['session_id'] = Variable<int>(sessionId.value);
+    }
     return map;
   }
 
@@ -1509,7 +1926,8 @@ class ParticipationsCompanion extends UpdateCompanion<Participation> {
           ..write('date: $date, ')
           ..write('isPositive: $isPositive, ')
           ..write('note: $note, ')
-          ..write('behaviorId: $behaviorId')
+          ..write('behaviorId: $behaviorId, ')
+          ..write('sessionId: $sessionId')
           ..write(')'))
         .toString();
   }
@@ -1523,13 +1941,21 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $StudentsTable students = $StudentsTable(this);
   late final $NegativeBehaviorsTable negativeBehaviors =
       $NegativeBehaviorsTable(this);
+  late final $ProtocolSessionsTable protocolSessions =
+      $ProtocolSessionsTable(this);
   late final $ParticipationsTable participations = $ParticipationsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [classes, subjects, students, negativeBehaviors, participations];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+        classes,
+        subjects,
+        students,
+        negativeBehaviors,
+        protocolSessions,
+        participations
+      ];
   @override
   StreamQueryUpdateRules get streamUpdateRules => const StreamQueryUpdateRules(
         [
@@ -1548,6 +1974,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
             ],
           ),
           WritePropagation(
+            on: TableUpdateQuery.onTableName('subjects',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('protocol_sessions', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
             on: TableUpdateQuery.onTableName('students',
                 limitUpdateKind: UpdateKind.delete),
             result: [
@@ -1559,6 +1992,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
                 limitUpdateKind: UpdateKind.delete),
             result: [
               TableUpdate('participations', kind: UpdateKind.delete),
+            ],
+          ),
+          WritePropagation(
+            on: TableUpdateQuery.onTableName('protocol_sessions',
+                limitUpdateKind: UpdateKind.delete),
+            result: [
+              TableUpdate('participations', kind: UpdateKind.update),
             ],
           ),
         ],
@@ -1915,6 +2355,23 @@ final class $$SubjectsTableReferences
         manager.$state.copyWith(prefetchedData: [item]));
   }
 
+  static MultiTypedResultKey<$ProtocolSessionsTable, List<ProtocolSession>>
+      _protocolSessionsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.protocolSessions,
+              aliasName: $_aliasNameGenerator(
+                  db.subjects.id, db.protocolSessions.subjectId));
+
+  $$ProtocolSessionsTableProcessedTableManager get protocolSessionsRefs {
+    final manager =
+        $$ProtocolSessionsTableTableManager($_db, $_db.protocolSessions)
+            .filter((f) => f.subjectId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache =
+        $_typedResult.readTableOrNull(_protocolSessionsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
   static MultiTypedResultKey<$ParticipationsTable, List<Participation>>
       _participationsRefsTable(_$AppDatabase db) =>
           MultiTypedResultKey.fromTable(db.participations,
@@ -1970,6 +2427,27 @@ class $$SubjectsTableFilterComposer
                   $removeJoinBuilderFromRootComposer,
             ));
     return composer;
+  }
+
+  Expression<bool> protocolSessionsRefs(
+      Expression<bool> Function($$ProtocolSessionsTableFilterComposer f) f) {
+    final $$ProtocolSessionsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.protocolSessions,
+        getReferencedColumn: (t) => t.subjectId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProtocolSessionsTableFilterComposer(
+              $db: $db,
+              $table: $db.protocolSessions,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
   }
 
   Expression<bool> participationsRefs(
@@ -2077,6 +2555,27 @@ class $$SubjectsTableAnnotationComposer
     return composer;
   }
 
+  Expression<T> protocolSessionsRefs<T extends Object>(
+      Expression<T> Function($$ProtocolSessionsTableAnnotationComposer a) f) {
+    final $$ProtocolSessionsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.protocolSessions,
+        getReferencedColumn: (t) => t.subjectId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProtocolSessionsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.protocolSessions,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
   Expression<T> participationsRefs<T extends Object>(
       Expression<T> Function($$ParticipationsTableAnnotationComposer a) f) {
     final $$ParticipationsTableAnnotationComposer composer = $composerBuilder(
@@ -2110,7 +2609,8 @@ class $$SubjectsTableTableManager extends RootTableManager<
     $$SubjectsTableUpdateCompanionBuilder,
     (Subject, $$SubjectsTableReferences),
     Subject,
-    PrefetchHooks Function({bool classId, bool participationsRefs})> {
+    PrefetchHooks Function(
+        {bool classId, bool protocolSessionsRefs, bool participationsRefs})> {
   $$SubjectsTableTableManager(_$AppDatabase db, $SubjectsTable table)
       : super(TableManagerState(
           db: db,
@@ -2154,10 +2654,13 @@ class $$SubjectsTableTableManager extends RootTableManager<
                   (e.readTable(table), $$SubjectsTableReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: (
-              {classId = false, participationsRefs = false}) {
+              {classId = false,
+              protocolSessionsRefs = false,
+              participationsRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
+                if (protocolSessionsRefs) db.protocolSessions,
                 if (participationsRefs) db.participations
               ],
               addJoins: <
@@ -2188,6 +2691,19 @@ class $$SubjectsTableTableManager extends RootTableManager<
               },
               getPrefetchedDataCallback: (items) async {
                 return [
+                  if (protocolSessionsRefs)
+                    await $_getPrefetchedData<Subject, $SubjectsTable,
+                            ProtocolSession>(
+                        currentTable: table,
+                        referencedTable: $$SubjectsTableReferences
+                            ._protocolSessionsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$SubjectsTableReferences(db, table, p0)
+                                .protocolSessionsRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.subjectId == item.id),
+                        typedResults: items),
                   if (participationsRefs)
                     await $_getPrefetchedData<Subject, $SubjectsTable,
                             Participation>(
@@ -2219,7 +2735,8 @@ typedef $$SubjectsTableProcessedTableManager = ProcessedTableManager<
     $$SubjectsTableUpdateCompanionBuilder,
     (Subject, $$SubjectsTableReferences),
     Subject,
-    PrefetchHooks Function({bool classId, bool participationsRefs})>;
+    PrefetchHooks Function(
+        {bool classId, bool protocolSessionsRefs, bool participationsRefs})>;
 typedef $$StudentsTableCreateCompanionBuilder = StudentsCompanion Function({
   Value<int> id,
   required String firstName,
@@ -2782,6 +3299,382 @@ typedef $$NegativeBehaviorsTableProcessedTableManager = ProcessedTableManager<
     (NegativeBehavior, $$NegativeBehaviorsTableReferences),
     NegativeBehavior,
     PrefetchHooks Function({bool participationsRefs})>;
+typedef $$ProtocolSessionsTableCreateCompanionBuilder
+    = ProtocolSessionsCompanion Function({
+  Value<int> id,
+  required int subjectId,
+  required DateTime startTime,
+  Value<DateTime?> endTime,
+  Value<String?> topic,
+  Value<String?> notes,
+  Value<String?> homework,
+});
+typedef $$ProtocolSessionsTableUpdateCompanionBuilder
+    = ProtocolSessionsCompanion Function({
+  Value<int> id,
+  Value<int> subjectId,
+  Value<DateTime> startTime,
+  Value<DateTime?> endTime,
+  Value<String?> topic,
+  Value<String?> notes,
+  Value<String?> homework,
+});
+
+final class $$ProtocolSessionsTableReferences extends BaseReferences<
+    _$AppDatabase, $ProtocolSessionsTable, ProtocolSession> {
+  $$ProtocolSessionsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $SubjectsTable _subjectIdTable(_$AppDatabase db) =>
+      db.subjects.createAlias(
+          $_aliasNameGenerator(db.protocolSessions.subjectId, db.subjects.id));
+
+  $$SubjectsTableProcessedTableManager get subjectId {
+    final $_column = $_itemColumn<int>('subject_id')!;
+
+    final manager = $$SubjectsTableTableManager($_db, $_db.subjects)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_subjectIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static MultiTypedResultKey<$ParticipationsTable, List<Participation>>
+      _participationsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.participations,
+              aliasName: $_aliasNameGenerator(
+                  db.protocolSessions.id, db.participations.sessionId));
+
+  $$ParticipationsTableProcessedTableManager get participationsRefs {
+    final manager = $$ParticipationsTableTableManager($_db, $_db.participations)
+        .filter((f) => f.sessionId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_participationsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
+
+class $$ProtocolSessionsTableFilterComposer
+    extends Composer<_$AppDatabase, $ProtocolSessionsTable> {
+  $$ProtocolSessionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get startTime => $composableBuilder(
+      column: $table.startTime, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get endTime => $composableBuilder(
+      column: $table.endTime, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get topic => $composableBuilder(
+      column: $table.topic, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get homework => $composableBuilder(
+      column: $table.homework, builder: (column) => ColumnFilters(column));
+
+  $$SubjectsTableFilterComposer get subjectId {
+    final $$SubjectsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.subjectId,
+        referencedTable: $db.subjects,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$SubjectsTableFilterComposer(
+              $db: $db,
+              $table: $db.subjects,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<bool> participationsRefs(
+      Expression<bool> Function($$ParticipationsTableFilterComposer f) f) {
+    final $$ParticipationsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.participations,
+        getReferencedColumn: (t) => t.sessionId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ParticipationsTableFilterComposer(
+              $db: $db,
+              $table: $db.participations,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$ProtocolSessionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProtocolSessionsTable> {
+  $$ProtocolSessionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get startTime => $composableBuilder(
+      column: $table.startTime, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get endTime => $composableBuilder(
+      column: $table.endTime, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get topic => $composableBuilder(
+      column: $table.topic, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+      column: $table.notes, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get homework => $composableBuilder(
+      column: $table.homework, builder: (column) => ColumnOrderings(column));
+
+  $$SubjectsTableOrderingComposer get subjectId {
+    final $$SubjectsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.subjectId,
+        referencedTable: $db.subjects,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$SubjectsTableOrderingComposer(
+              $db: $db,
+              $table: $db.subjects,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$ProtocolSessionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProtocolSessionsTable> {
+  $$ProtocolSessionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get startTime =>
+      $composableBuilder(column: $table.startTime, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endTime =>
+      $composableBuilder(column: $table.endTime, builder: (column) => column);
+
+  GeneratedColumn<String> get topic =>
+      $composableBuilder(column: $table.topic, builder: (column) => column);
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
+
+  GeneratedColumn<String> get homework =>
+      $composableBuilder(column: $table.homework, builder: (column) => column);
+
+  $$SubjectsTableAnnotationComposer get subjectId {
+    final $$SubjectsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.subjectId,
+        referencedTable: $db.subjects,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$SubjectsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.subjects,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  Expression<T> participationsRefs<T extends Object>(
+      Expression<T> Function($$ParticipationsTableAnnotationComposer a) f) {
+    final $$ParticipationsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.participations,
+        getReferencedColumn: (t) => t.sessionId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ParticipationsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.participations,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+}
+
+class $$ProtocolSessionsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $ProtocolSessionsTable,
+    ProtocolSession,
+    $$ProtocolSessionsTableFilterComposer,
+    $$ProtocolSessionsTableOrderingComposer,
+    $$ProtocolSessionsTableAnnotationComposer,
+    $$ProtocolSessionsTableCreateCompanionBuilder,
+    $$ProtocolSessionsTableUpdateCompanionBuilder,
+    (ProtocolSession, $$ProtocolSessionsTableReferences),
+    ProtocolSession,
+    PrefetchHooks Function({bool subjectId, bool participationsRefs})> {
+  $$ProtocolSessionsTableTableManager(
+      _$AppDatabase db, $ProtocolSessionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProtocolSessionsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProtocolSessionsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProtocolSessionsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> subjectId = const Value.absent(),
+            Value<DateTime> startTime = const Value.absent(),
+            Value<DateTime?> endTime = const Value.absent(),
+            Value<String?> topic = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> homework = const Value.absent(),
+          }) =>
+              ProtocolSessionsCompanion(
+            id: id,
+            subjectId: subjectId,
+            startTime: startTime,
+            endTime: endTime,
+            topic: topic,
+            notes: notes,
+            homework: homework,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required int subjectId,
+            required DateTime startTime,
+            Value<DateTime?> endTime = const Value.absent(),
+            Value<String?> topic = const Value.absent(),
+            Value<String?> notes = const Value.absent(),
+            Value<String?> homework = const Value.absent(),
+          }) =>
+              ProtocolSessionsCompanion.insert(
+            id: id,
+            subjectId: subjectId,
+            startTime: startTime,
+            endTime: endTime,
+            topic: topic,
+            notes: notes,
+            homework: homework,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$ProtocolSessionsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: (
+              {subjectId = false, participationsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (participationsRefs) db.participations
+              ],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (subjectId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.subjectId,
+                    referencedTable:
+                        $$ProtocolSessionsTableReferences._subjectIdTable(db),
+                    referencedColumn: $$ProtocolSessionsTableReferences
+                        ._subjectIdTable(db)
+                        .id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (participationsRefs)
+                    await $_getPrefetchedData<ProtocolSession,
+                            $ProtocolSessionsTable, Participation>(
+                        currentTable: table,
+                        referencedTable: $$ProtocolSessionsTableReferences
+                            ._participationsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$ProtocolSessionsTableReferences(db, table, p0)
+                                .participationsRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.sessionId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$ProtocolSessionsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $ProtocolSessionsTable,
+    ProtocolSession,
+    $$ProtocolSessionsTableFilterComposer,
+    $$ProtocolSessionsTableOrderingComposer,
+    $$ProtocolSessionsTableAnnotationComposer,
+    $$ProtocolSessionsTableCreateCompanionBuilder,
+    $$ProtocolSessionsTableUpdateCompanionBuilder,
+    (ProtocolSession, $$ProtocolSessionsTableReferences),
+    ProtocolSession,
+    PrefetchHooks Function({bool subjectId, bool participationsRefs})>;
 typedef $$ParticipationsTableCreateCompanionBuilder = ParticipationsCompanion
     Function({
   Value<int> id,
@@ -2791,6 +3684,7 @@ typedef $$ParticipationsTableCreateCompanionBuilder = ParticipationsCompanion
   required bool isPositive,
   Value<String?> note,
   Value<int?> behaviorId,
+  Value<int?> sessionId,
 });
 typedef $$ParticipationsTableUpdateCompanionBuilder = ParticipationsCompanion
     Function({
@@ -2801,6 +3695,7 @@ typedef $$ParticipationsTableUpdateCompanionBuilder = ParticipationsCompanion
   Value<bool> isPositive,
   Value<String?> note,
   Value<int?> behaviorId,
+  Value<int?> sessionId,
 });
 
 final class $$ParticipationsTableReferences
@@ -2849,6 +3744,22 @@ final class $$ParticipationsTableReferences
         $$NegativeBehaviorsTableTableManager($_db, $_db.negativeBehaviors)
             .filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_behaviorIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $ProtocolSessionsTable _sessionIdTable(_$AppDatabase db) =>
+      db.protocolSessions.createAlias($_aliasNameGenerator(
+          db.participations.sessionId, db.protocolSessions.id));
+
+  $$ProtocolSessionsTableProcessedTableManager? get sessionId {
+    final $_column = $_itemColumn<int>('session_id');
+    if ($_column == null) return null;
+    final manager =
+        $$ProtocolSessionsTableTableManager($_db, $_db.protocolSessions)
+            .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_sessionIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: [item]));
@@ -2935,6 +3846,26 @@ class $$ParticipationsTableFilterComposer
             ));
     return composer;
   }
+
+  $$ProtocolSessionsTableFilterComposer get sessionId {
+    final $$ProtocolSessionsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.sessionId,
+        referencedTable: $db.protocolSessions,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProtocolSessionsTableFilterComposer(
+              $db: $db,
+              $table: $db.protocolSessions,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$ParticipationsTableOrderingComposer
@@ -3010,6 +3941,26 @@ class $$ParticipationsTableOrderingComposer
             $$NegativeBehaviorsTableOrderingComposer(
               $db: $db,
               $table: $db.negativeBehaviors,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$ProtocolSessionsTableOrderingComposer get sessionId {
+    final $$ProtocolSessionsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.sessionId,
+        referencedTable: $db.protocolSessions,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProtocolSessionsTableOrderingComposer(
+              $db: $db,
+              $table: $db.protocolSessions,
               $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
               joinBuilder: joinBuilder,
               $removeJoinBuilderFromRootComposer:
@@ -3100,6 +4051,26 @@ class $$ParticipationsTableAnnotationComposer
                 ));
     return composer;
   }
+
+  $$ProtocolSessionsTableAnnotationComposer get sessionId {
+    final $$ProtocolSessionsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.sessionId,
+        referencedTable: $db.protocolSessions,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$ProtocolSessionsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.protocolSessions,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$ParticipationsTableTableManager extends RootTableManager<
@@ -3113,7 +4084,8 @@ class $$ParticipationsTableTableManager extends RootTableManager<
     $$ParticipationsTableUpdateCompanionBuilder,
     (Participation, $$ParticipationsTableReferences),
     Participation,
-    PrefetchHooks Function({bool studentId, bool subjectId, bool behaviorId})> {
+    PrefetchHooks Function(
+        {bool studentId, bool subjectId, bool behaviorId, bool sessionId})> {
   $$ParticipationsTableTableManager(
       _$AppDatabase db, $ParticipationsTable table)
       : super(TableManagerState(
@@ -3133,6 +4105,7 @@ class $$ParticipationsTableTableManager extends RootTableManager<
             Value<bool> isPositive = const Value.absent(),
             Value<String?> note = const Value.absent(),
             Value<int?> behaviorId = const Value.absent(),
+            Value<int?> sessionId = const Value.absent(),
           }) =>
               ParticipationsCompanion(
             id: id,
@@ -3142,6 +4115,7 @@ class $$ParticipationsTableTableManager extends RootTableManager<
             isPositive: isPositive,
             note: note,
             behaviorId: behaviorId,
+            sessionId: sessionId,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
@@ -3151,6 +4125,7 @@ class $$ParticipationsTableTableManager extends RootTableManager<
             required bool isPositive,
             Value<String?> note = const Value.absent(),
             Value<int?> behaviorId = const Value.absent(),
+            Value<int?> sessionId = const Value.absent(),
           }) =>
               ParticipationsCompanion.insert(
             id: id,
@@ -3160,6 +4135,7 @@ class $$ParticipationsTableTableManager extends RootTableManager<
             isPositive: isPositive,
             note: note,
             behaviorId: behaviorId,
+            sessionId: sessionId,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (
@@ -3168,7 +4144,10 @@ class $$ParticipationsTableTableManager extends RootTableManager<
                   ))
               .toList(),
           prefetchHooksCallback: (
-              {studentId = false, subjectId = false, behaviorId = false}) {
+              {studentId = false,
+              subjectId = false,
+              behaviorId = false,
+              sessionId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -3215,6 +4194,16 @@ class $$ParticipationsTableTableManager extends RootTableManager<
                         $$ParticipationsTableReferences._behaviorIdTable(db).id,
                   ) as T;
                 }
+                if (sessionId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.sessionId,
+                    referencedTable:
+                        $$ParticipationsTableReferences._sessionIdTable(db),
+                    referencedColumn:
+                        $$ParticipationsTableReferences._sessionIdTable(db).id,
+                  ) as T;
+                }
 
                 return state;
               },
@@ -3237,7 +4226,8 @@ typedef $$ParticipationsTableProcessedTableManager = ProcessedTableManager<
     $$ParticipationsTableUpdateCompanionBuilder,
     (Participation, $$ParticipationsTableReferences),
     Participation,
-    PrefetchHooks Function({bool studentId, bool subjectId, bool behaviorId})>;
+    PrefetchHooks Function(
+        {bool studentId, bool subjectId, bool behaviorId, bool sessionId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -3250,6 +4240,8 @@ class $AppDatabaseManager {
       $$StudentsTableTableManager(_db, _db.students);
   $$NegativeBehaviorsTableTableManager get negativeBehaviors =>
       $$NegativeBehaviorsTableTableManager(_db, _db.negativeBehaviors);
+  $$ProtocolSessionsTableTableManager get protocolSessions =>
+      $$ProtocolSessionsTableTableManager(_db, _db.protocolSessions);
   $$ParticipationsTableTableManager get participations =>
       $$ParticipationsTableTableManager(_db, _db.participations);
 }

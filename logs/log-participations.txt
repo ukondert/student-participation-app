@@ -1,0 +1,4 @@
+Logging positive participation for studentid: 53, subjectid: 6, activeSession: 7
+Logging positive participation for studentid: 54, subjectid: 6, activeSession: 7
+Logging positive participation for studentid: 55, subjectid: 6, activeSession: 7
+Logging negative participation for studentid: 55, subjectid: 6, activeSession: 7

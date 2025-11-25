@@ -48,14 +48,28 @@ class Participations extends Table {
   BoolColumn get isPositive => boolean()(); // true = positive, false = negative
   TextColumn get note => text().nullable()(); // For negative behavior description or other notes
   IntColumn get behaviorId => integer().nullable().references(NegativeBehaviors, #id)(); // Optional link to predefined behavior
+  IntColumn get sessionId => integer().nullable().references(ProtocolSessions, #id, onDelete: KeyAction.setNull)(); // Link to lesson session
 }
 
-@DriftDatabase(tables: [Classes, Subjects, Students, NegativeBehaviors, Participations])
+class ProtocolSessions extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get subjectId => integer().references(Subjects, #id, onDelete: KeyAction.cascade)();
+  DateTimeColumn get startTime => dateTime()();
+  DateTimeColumn get endTime => dateTime().nullable()();
+  TextColumn get topic => text().nullable()(); // Lesson topic/title
+  TextColumn get notes => text().nullable()(); // Lesson content notes
+  TextColumn get homework => text().nullable()(); // Optional homework
+}
+
+@DriftDatabase(tables: [Classes, Subjects, Students, NegativeBehaviors, Participations, ProtocolSessions])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
+  /// Constructor for testing with custom connection
+  AppDatabase.forTestingWithConnection(super.e);
+
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -66,6 +80,14 @@ class AppDatabase extends _$AppDatabase {
       await into(negativeBehaviors).insert(NegativeBehaviorsCompanion.insert(description: 'Hausübung fehlt'));
       await into(negativeBehaviors).insert(NegativeBehaviorsCompanion.insert(description: 'Material fehlt'));
       await into(negativeBehaviors).insert(NegativeBehaviorsCompanion.insert(description: 'Zuspätkommen'));
+    },
+    onUpgrade: (Migrator m, int from, int to) async {
+      if (from < 2) {
+        // Add ProtocolSessions table
+        await m.createTable(protocolSessions);
+        // Add sessionId column to Participations
+        await m.addColumn(participations, participations.sessionId);
+      }
     },
   );
 }

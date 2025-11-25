@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:student_participation_app/domain/entities/entities.dart';
 import 'package:student_participation_app/presentation/pages/students/student_detail_page.dart';
 import 'package:student_participation_app/presentation/providers/providers.dart';
@@ -11,18 +10,17 @@ import 'student_test_helpers.dart';
 
 void main() {
   late MockParticipationRepository mockParticipationRepository;
-  late StreamController<List<Participation>> _participationsController;
+  late StreamController<List<Participation>> participationsController;
 
   setUp(() {
     mockParticipationRepository = MockParticipationRepository();
-    _participationsController = StreamController<List<Participation>>.broadcast();
+    participationsController = StreamController<List<Participation>>.broadcast();
 
-    when(mockParticipationRepository.watchParticipations(any, any))
-        .thenAnswer((_) => _participationsController.stream);
+    mockParticipationRepository.participationsStream = participationsController.stream;
   });
 
   tearDown(() {
-    _participationsController.close();
+    participationsController.close();
   });
 
   testWidgets('StudentDetailPage displays student info and stats', (tester) async {
@@ -70,7 +68,7 @@ void main() {
         note: 'Stört',
       ),
     ];
-    _participationsController.add(participations);
+    participationsController.add(participations);
     await tester.pumpAndSettle();
 
     // Verify stats
@@ -118,13 +116,13 @@ void main() {
         isPositive: true,
       ),
     ];
-    _participationsController.add(participations);
+    participationsController.add(participations);
     await tester.pumpAndSettle();
 
     // Tap delete button
     await tester.tap(find.byIcon(Icons.delete_outline));
     await tester.pump();
 
-    verify(mockParticipationRepository.deleteParticipation(1)).called(1);
+    expect(mockParticipationRepository.deletedParticipationIds, contains(1));
   });
 }

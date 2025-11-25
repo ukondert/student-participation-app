@@ -66,6 +66,7 @@ class Participation {
   final bool isPositive;
   final String? note;
   final int? behaviorId;
+  final int? sessionId;
 
   Participation({
     required this.id,
@@ -75,5 +76,42 @@ class Participation {
     required this.isPositive,
     this.note,
     this.behaviorId,
+    this.sessionId,
+  });
+}
+
+class ProtocolSession {
+  final int id;
+  final int subjectId;
+  final DateTime startTime;
+  final DateTime? endTime;
+  final String? topic;
+  final String? notes;
+  final String? homework;
+
+  ProtocolSession({
+    required this.id,
+    required this.subjectId,
+    required this.startTime,
+    this.endTime,
+    this.topic,
+    this.notes,
+    this.homework,
+  });
+}
+
+/// View model combining participation data with related entities for display.
+/// This reduces UI complexity by pre-joining related data.
+class ParticipationWithDetails {
+  final Participation participation;
+  final String description;
+  final ProtocolSession? session;
+  final NegativeBehavior? behavior;
+
+  ParticipationWithDetails({
+    required this.participation,
+    required this.description,
+    this.session,
+    this.behavior,
   });
 }

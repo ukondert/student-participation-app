@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
 import '../../templates/base_page_template.dart';
+import '../../organisms/lists/student_participations_list.dart';
 
 class StudentDetailPage extends ConsumerWidget {
   final Student student;
@@ -52,25 +53,8 @@ class StudentDetailPage extends ConsumerWidget {
                     ),
                     const Divider(),
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: participations.length,
-                        itemBuilder: (context, index) {
-                          final p = participations[index];
-                          return ListTile(
-                            leading: Icon(
-                              p.isPositive ? Icons.thumb_up : Icons.thumb_down,
-                              color: p.isPositive ? Colors.green : Colors.red,
-                            ),
-                            title: Text(p.isPositive ? 'Mitarbeit' : (p.note ?? 'Negativ')),
-                            subtitle: Text(DateFormat('dd.MM.yyyy HH:mm').format(p.date)),
-                            trailing: IconButton(
-                              icon: const Icon(Icons.delete_outline),
-                              onPressed: () {
-                                ref.read(participationRepositoryProvider).deleteParticipation(p.id);
-                              },
-                            ),
-                          );
-                        },
+                      child: StudentParticipationsList(
+                        studentId: student.id,
                       ),
                     ),
                   ],

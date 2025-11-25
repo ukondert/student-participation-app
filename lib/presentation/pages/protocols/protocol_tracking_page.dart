@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
 import '../../templates/base_page_template.dart';
+import '../../molecules/cards/student_participation_card.dart';
 import '../settings/settings_page.dart';
 
 class ProtocolTrackingPage extends ConsumerWidget {
@@ -26,188 +27,107 @@ class ProtocolTrackingPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final studentsStream = ref.watch(classRepositoryProvider).watchStudents(classId);
     final behaviorsStream = ref.watch(participationRepositoryProvider).watchNegativeBehaviors();
+    final activeSessionStream = ref.watch(participationRepositoryProvider).watchActiveSession(subjectId);
 
-    return BasePageTemplate(
-      title: Platform.isWindows 
-          ? '$className - $subjectName' 
-          : '$className - $subjectShortName',
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SettingsPage()),
-            );
-          },
-        ),
-      ],
-      body: StreamBuilder<List<Student>>(
-        stream: studentsStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return StreamBuilder<ProtocolSession?>(
+      stream: activeSessionStream,
+      builder: (context, sessionSnapshot) {
+        final activeSession = sessionSnapshot.data;
 
-          final students = snapshot.data!;
-
-          if (students.isEmpty) {
-            return const Center(
-              child: Text('Keine Schüler in dieser Klasse.'),
-            );
-          }
-
-          return GridView.builder(
-            padding: const EdgeInsets.all(16.0),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 16,
-              mainAxisSpacing: 16,
-              childAspectRatio: 1,
-            ),
-            itemCount: students.length,
-            itemBuilder: (context, index) {
-              final student = students[index];
-              
-              // Watch participations for this student to get counts
-              return StreamBuilder<List<Participation>>(
-                stream: ref.watch(participationRepositoryProvider).watchParticipations(student.id, subjectId),
-                builder: (context, participationSnapshot) {
-                  int positiveCount = 0;
-                  int negativeCount = 0;
-
-                  if (participationSnapshot.hasData) {
-                    final participations = participationSnapshot.data!;
-                    positiveCount = participations.where((p) => p.isPositive).length;
-                    negativeCount = participations.where((p) => !p.isPositive).length;
-                  }
-
-                  return GestureDetector(
-                    onTap: () => _logPositive(context, ref, student),
-                    onLongPress: () => _showNegativeMenu(context, ref, student, behaviorsStream),
-                    child: Card(
-                      color: _getCardColor(positiveCount, negativeCount),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: CircleAvatar(
-                              radius: 40,
-                              backgroundColor: Colors.white,
-                              child: Text(
-                                student.shortCode,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                          // Positive count (bottom left)
-                          Positioned(
-                            bottom: 8,
-                            left: 8,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                '$positiveCount',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          // Negative count (bottom right)
-                          Positioned(
-                            bottom: 8,
-                            right: 8,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                '$negativeCount',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+        return BasePageTemplate(
+          title: Platform.isWindows 
+              ? '$className - $subjectName' 
+              : '$className - $subjectShortName',
+          actions: [
+            if (activeSession != null)
+              IconButton(
+                icon: const Icon(Icons.stop_circle),
+                tooltip: 'Stunde beenden',
+                onPressed: () => _endSession(context, ref, activeSession.id),
+              )
+            else
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SettingsPage()),
                   );
                 },
-              );
-            },
-          );
-        },
-      ),
+              ),
+          ],
+          body: _buildStudentGrid(context, ref, studentsStream, behaviorsStream, activeSession),
+        );
+      },
     );
   }
 
-  /// Calculates the card background color based on participation balance
-  /// 
-  /// Positive balance (green shades):
-  /// - +1: Light green
-  /// - +3: Medium green  
-  /// - >=5: Dark green
-  /// 
-  /// Negative balance (red shades):
-  /// - -1: Light red
-  /// - -2: Medium red
-  /// - >=-3: Dark red
-  /// 
-  /// Balanced (0): Neutral gray
-  Color _getCardColor(int positiveCount, int negativeCount) {
-    final difference = positiveCount - negativeCount;
-    
-    if (difference >= 5) {
-      return Colors.green.shade300;
-    } else if (difference >= 3) {
-      return Colors.green.shade200;
-    } else if (difference >= 1) {
-      return Colors.green.shade100;
-    } else if (difference <= -3) {
-      return Colors.red.shade300;
-    } else if (difference <= -2) {
-      return Colors.red.shade200;
-    } else if (difference <= -1) {
-      return Colors.red.shade100;
-    } else {
-      return Colors.grey.shade50;
-    }
+  Widget _buildStudentGrid(
+    BuildContext context,
+    WidgetRef ref,
+    Stream<List<Student>> studentsStream,
+    Stream<List<NegativeBehavior>> behaviorsStream,
+    ProtocolSession? activeSession,
+  ) {
+    return StreamBuilder<List<Student>>(
+      stream: studentsStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final students = snapshot.data!;
+
+        if (students.isEmpty) {
+          return const Center(
+            child: Text('Keine Schüler in dieser Klasse.'),
+          );
+        }
+
+        return GridView.builder(
+          padding: const EdgeInsets.all(16.0),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 1,
+          ),
+          itemCount: students.length,
+          itemBuilder: (context, index) {
+            final student = students[index];
+            return StudentCard(
+              student: student,
+              subjectId: subjectId,
+              onTap: () => _logPositive(context, ref, student, activeSession),
+              onLongPress: () => _showNegativeMenu(context, ref, student, behaviorsStream, activeSession),
+            );
+          },
+        );
+      },
+    );
   }
 
-  void _logPositive(BuildContext context, WidgetRef ref, Student student) {
+  void _logPositive(BuildContext context, WidgetRef ref, Student student, ProtocolSession? activeSession) {
+    print('Logging positive participation for studentid: ${student.id}, subjectid: $subjectId, activeSession: ${activeSession?.id}');
     ref.read(participationRepositoryProvider).addParticipation(
       student.id,
       subjectId,
       true,
+      sessionId: activeSession?.id,
     );
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('✓ ${student.shortCode} +1'),
-        duration: const Duration(seconds: 1),
+        content: Text('Positive Mitarbeit: ${student.firstName} ${student.lastName}'),
         backgroundColor: Colors.green,
+        duration: const Duration(milliseconds: 500),
       ),
     );
   }
 
-  void _showNegativeMenu(BuildContext context, WidgetRef ref, Student student, Stream<List<NegativeBehavior>> behaviorsStream) {
+  void _showNegativeMenu(BuildContext context, WidgetRef ref, Student student, Stream<List<NegativeBehavior>> behaviorsStream, ProtocolSession? activeSession) {
     showModalBottomSheet(
       context: context,
       builder: (context) => StreamBuilder<List<NegativeBehavior>>(
@@ -226,18 +146,20 @@ class ProtocolTrackingPage extends ConsumerWidget {
               return ListTile(
                 title: Text(behavior.description),
                 onTap: () {
+                   print('Logging negative participation for studentid: ${student.id}, subjectid: $subjectId, activeSession: ${activeSession?.id}');
                   ref.read(participationRepositoryProvider).addParticipation(
                     student.id,
                     subjectId,
                     false,
                     behaviorId: behavior.id,
+                    sessionId: activeSession?.id,
                   );
                   Navigator.pop(context);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('${student.shortCode}: ${behavior.description}'),
-                      duration: const Duration(seconds: 2),
                       backgroundColor: Colors.red,
+                      duration: const Duration(seconds: 2),
                     ),
                   );
                 },
@@ -247,5 +169,37 @@ class ProtocolTrackingPage extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  Future<void> _endSession(BuildContext context, WidgetRef ref, int sessionId) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Stunde beenden'),
+        content: const Text('Möchten Sie die Unterrichtseinheit wirklich beenden?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Abbrechen'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Beenden'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await ref.read(participationRepositoryProvider).endSession(sessionId);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Unterrichtseinheit beendet'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
   }
 }

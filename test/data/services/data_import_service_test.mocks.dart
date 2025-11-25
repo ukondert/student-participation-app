@@ -292,6 +292,7 @@ class MockIParticipationRepository extends _i1.Mock
     bool? isPositive, {
     String? note,
     int? behaviorId,
+    int? sessionId,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -304,6 +305,7 @@ class MockIParticipationRepository extends _i1.Mock
           {
             #note: note,
             #behaviorId: behaviorId,
+            #sessionId: sessionId,
           },
         ),
         returnValue: _i3.Future<int>.value(0),
@@ -348,4 +350,86 @@ class MockIParticipationRepository extends _i1.Mock
         returnValue: _i3.Future<void>.value(),
         returnValueForMissingStub: _i3.Future<void>.value(),
       ) as _i3.Future<void>);
+
+  @override
+  _i3.Future<int> startSession(
+    int? subjectId, {
+    String? topic,
+    String? notes,
+    String? homework,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #startSession,
+          [subjectId],
+          {
+            #topic: topic,
+            #notes: notes,
+            #homework: homework,
+          },
+        ),
+        returnValue: _i3.Future<int>.value(0),
+      ) as _i3.Future<int>);
+
+  @override
+  _i3.Future<void> endSession(int? sessionId) => (super.noSuchMethod(
+        Invocation.method(
+          #endSession,
+          [sessionId],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+
+  @override
+  _i3.Future<void> updateSession(
+    int? sessionId, {
+    String? topic,
+    String? notes,
+    String? homework,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updateSession,
+          [sessionId],
+          {
+            #topic: topic,
+            #notes: notes,
+            #homework: homework,
+          },
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+
+  @override
+  _i3.Future<_i4.ProtocolSession?> getActiveSession(int? subjectId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getActiveSession,
+          [subjectId],
+        ),
+        returnValue: _i3.Future<_i4.ProtocolSession?>.value(),
+      ) as _i3.Future<_i4.ProtocolSession?>);
+
+  @override
+  _i3.Stream<_i4.ProtocolSession?> watchActiveSession(int? subjectId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #watchActiveSession,
+          [subjectId],
+        ),
+        returnValue: _i3.Stream<_i4.ProtocolSession?>.empty(),
+      ) as _i3.Stream<_i4.ProtocolSession?>);
+
+  @override
+  _i3.Future<List<_i4.ProtocolSession>> getSessionsForSubject(int? subjectId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getSessionsForSubject,
+          [subjectId],
+        ),
+        returnValue: _i3.Future<List<_i4.ProtocolSession>>.value(
+            <_i4.ProtocolSession>[]),
+      ) as _i3.Future<List<_i4.ProtocolSession>>);
 }

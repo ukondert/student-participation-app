@@ -56,7 +56,10 @@ class CsvExporter {
     final file = File(path);
     await file.writeAsString(csvData);
 
-    // Share
-    await Share.shareXFiles([XFile(path)], text: 'Mitarbeits-Export für $className - $subjectName');
+    // Share (migrated from deprecated Share.shareXFiles)
+    await Share.shareXFiles(
+      [XFile(path)],
+      text: 'Mitarbeits-Export für $className - $subjectName',
+    );
   }
 }

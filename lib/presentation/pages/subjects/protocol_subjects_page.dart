@@ -27,7 +27,32 @@ class ProtocolSubjectsPage extends ConsumerWidget {
       ],
       list: SubjectListWidget(
         onSubjectTap: (context, subject, schoolClass) async {
+          final repository = ref.read(participationRepositoryProvider);
+          
+          // Check for active session first
+          final activeSession = await repository.getActiveSession(subject.id);
+          
+          if (activeSession != null) {
+            // Navigate directly if session exists
+            if (context.mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProtocolTrackingPage(
+                    classId: subject.classId,
+                    subjectId: subject.id,
+                    className: schoolClass?.name ?? '',
+                    subjectName: subject.name,
+                    subjectShortName: subject.shortName,
+                  ),
+                ),
+              );
+            }
+            return;
+          }
+
           // Show dialog to optionally enter session details
+          if (!context.mounted) return;
           final sessionData = await showDialog<SessionData>(
             context: context,
             builder: (_) => StartSessionDialog(subjectName: subject.name),
@@ -37,7 +62,6 @@ class ProtocolSubjectsPage extends ConsumerWidget {
           if (sessionData == null) return;
 
           // Start the session in the background
-          final repository = ref.read(participationRepositoryProvider);
           await repository.startSession(
             subject.id,
             topic: sessionData.topic,

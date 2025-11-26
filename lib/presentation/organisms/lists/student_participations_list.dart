@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/entities/entities.dart';
 import '../../providers/providers.dart';
-import '../../molecules/feedback/action_snack_bar.dart';
 import '../../molecules/cards/participation_card.dart';
 
 /// List organism displaying all participation entries for a single student.

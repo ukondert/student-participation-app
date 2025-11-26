@@ -7,7 +7,7 @@ import '../../templates/base_page_template.dart';
 import '../../molecules/cards/student_participation_card.dart';
 import '../settings/settings_page.dart';
 
-class ProtocolTrackingPage extends ConsumerWidget {
+class ProtocolTrackingPage extends ConsumerStatefulWidget {
   final int classId;
   final int subjectId;
   final String className;
@@ -24,39 +24,106 @@ class ProtocolTrackingPage extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final studentsStream = ref.watch(classRepositoryProvider).watchStudents(classId);
+  ConsumerState<ProtocolTrackingPage> createState() => _ProtocolTrackingPageState();
+}
+
+class _ProtocolTrackingPageState extends ConsumerState<ProtocolTrackingPage> {
+  bool _forcePop = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final studentsStream = ref.watch(classRepositoryProvider).watchStudents(widget.classId);
     final behaviorsStream = ref.watch(participationRepositoryProvider).watchNegativeBehaviors();
-    final activeSessionStream = ref.watch(participationRepositoryProvider).watchActiveSession(subjectId);
+    final activeSessionStream = ref.watch(participationRepositoryProvider).watchActiveSession(widget.subjectId);
 
     return StreamBuilder<ProtocolSession?>(
       stream: activeSessionStream,
       builder: (context, sessionSnapshot) {
         final activeSession = sessionSnapshot.data;
 
-        return BasePageTemplate(
-          title: Platform.isWindows 
-              ? '$className - $subjectName' 
-              : '$className - $subjectShortName',
-          actions: [
-            if (activeSession != null)
-              IconButton(
-                icon: const Icon(Icons.stop_circle),
-                tooltip: 'Stunde beenden',
-                onPressed: () => _endSession(context, ref, activeSession.id),
-              )
-            else
-              IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const SettingsPage()),
-                  );
-                },
+        return PopScope(
+          canPop: activeSession == null || _forcePop,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) return;
+
+            // Only show dialog if there's an active session
+            if (activeSession == null) {
+              if (mounted) {
+                setState(() {
+                  _forcePop = true;
+                });
+                Navigator.pop(context);
+              }
+              return;
+            }
+
+            final shouldEnd = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Stunde beenden?'),
+                content: const Text('Möchten Sie die Unterrichtseinheit beenden oder im Hintergrund weiterlaufen lassen?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, null), // Cancel
+                    child: const Text('Abbrechen'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false), // Keep running
+                    child: const Text('Weiterlaufen lassen'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context, true), // End session
+                    child: const Text('Beenden'),
+                  ),
+                ],
               ),
-          ],
-          body: _buildStudentGrid(context, ref, studentsStream, behaviorsStream, activeSession),
+            );
+
+            if (shouldEnd == null) return; // Cancelled
+
+            if (shouldEnd) {
+              await ref.read(participationRepositoryProvider).endSession(activeSession.id);
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Unterrichtseinheit beendet'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              }
+            }
+
+            if (mounted) {
+              setState(() {
+                _forcePop = true;
+              });
+              Navigator.pop(context);
+            }
+          },
+          child: BasePageTemplate(
+            title: Platform.isWindows 
+                ? '${widget.className} - ${widget.subjectName}' 
+                : '${widget.className} - ${widget.subjectShortName}',
+            actions: [
+              if (activeSession != null)
+                IconButton(
+                  icon: const Icon(Icons.stop_circle),
+                  tooltip: 'Stunde beenden',
+                  onPressed: () => _endSession(context, ref, activeSession.id),
+                )
+              else
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const SettingsPage()),
+                    );
+                  },
+                ),
+            ],
+            body: _buildStudentGrid(context, ref, studentsStream, behaviorsStream, activeSession),
+          ),
         );
       },
     );
@@ -100,7 +167,7 @@ class ProtocolTrackingPage extends ConsumerWidget {
             final student = students[index];
             return StudentCard(
               student: student,
-              subjectId: subjectId,
+              subjectId: widget.subjectId,
               onTap: () => _logPositive(context, ref, student, activeSession),
               onLongPress: () => _showNegativeMenu(context, ref, student, behaviorsStream, activeSession),
             );
@@ -111,10 +178,10 @@ class ProtocolTrackingPage extends ConsumerWidget {
   }
 
   void _logPositive(BuildContext context, WidgetRef ref, Student student, ProtocolSession? activeSession) {
-    print('Logging positive participation for studentid: ${student.id}, subjectid: $subjectId, activeSession: ${activeSession?.id}');
+    print('Logging positive participation for studentid: ${student.id}, subjectid: ${widget.subjectId}, activeSession: ${activeSession?.id}');
     ref.read(participationRepositoryProvider).addParticipation(
       student.id,
-      subjectId,
+      widget.subjectId,
       true,
       sessionId: activeSession?.id,
     );
@@ -146,10 +213,10 @@ class ProtocolTrackingPage extends ConsumerWidget {
               return ListTile(
                 title: Text(behavior.description),
                 onTap: () {
-                   print('Logging negative participation for studentid: ${student.id}, subjectid: $subjectId, activeSession: ${activeSession?.id}');
+                   print('Logging negative participation for studentid: ${student.id}, subjectid: ${widget.subjectId}, activeSession: ${activeSession?.id}');
                   ref.read(participationRepositoryProvider).addParticipation(
                     student.id,
-                    subjectId,
+                    widget.subjectId,
                     false,
                     behaviorId: behavior.id,
                     sessionId: activeSession?.id,

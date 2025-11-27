@@ -5,8 +5,7 @@ labels: ["user-story", "needs-refinement"]
 body:
   - type: markdown
     attributes:
-      value: |
-        Vielen Dank für das Einreichen einer User Story!
+      value: "Vielen Dank für das Einreichen einer User Story!"
   - type: textarea
     id: user-story
     attributes:

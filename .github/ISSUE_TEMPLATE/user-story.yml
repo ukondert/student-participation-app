@@ -1,0 +1,61 @@
+name: 📖  User Story
+description: Neue User Story für Feature-Entwicklung
+title: "[User Story] "
+labels: ["user-story", "needs-refinement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Vielen Dank für das Einreichen einer User Story!
+  - type: textarea
+    id: user-story
+    attributes:
+      label: User Story
+      description: Beschreiben Sie die User Story im Format "Als [Rolle] möchte ich [Ziel], um [Nutzen]"
+      placeholder: Als Schüler möchte ich Bücher online suchen können, um verfügbare Bücher zu finden ohne zur Bibliothek zu gehen.
+    validations:
+      required: true
+      
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Akzeptanzkriterien
+      description: Listen Sie die Akzeptanzkriterien auf
+      placeholder: |
+        - Suche nach Titel möglich
+        - Suche nach Autor möglich
+        - Anzeige der Verfügbarkeit
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: bounded-context
+    attributes:
+      label: Betroffener Bounded Context
+      options:
+        - Ausleih-Kontext (Core Domain)
+        - Anschaffungs-Kontext (Supporting)
+        - Nutzerprofil-Kontext (Generic)
+        - Infrastruktur
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: story-points
+    attributes:
+      label: Story Points
+      description: Geschätzter Aufwand
+      options:
+        - "1"
+        - "2"
+        - "3"
+        - "5"
+        - "8"
+        - "13"
+        - "21"
+    validations:
+      required: false
+      
+  - type: textarea
+    id: technical-notes
+    attributes:

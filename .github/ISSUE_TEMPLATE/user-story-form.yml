@@ -58,3 +58,4 @@ body:
   - type: textarea
     id: technical-notes
     attributes:
+      label: Tecnical Notes

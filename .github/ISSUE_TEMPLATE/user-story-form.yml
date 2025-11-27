@@ -58,4 +58,8 @@ body:
   - type: textarea
     id: technical-notes
     attributes:
-      label: Tecnical Notes
+      label: Technische Hinweise
+      description: Optional - technische Details oder Implementierungshinweise
+      placeholder: Betrifft AusleihExemplar-Aggregat und BuchkatalogEintrag
+    validations:
+      required: false

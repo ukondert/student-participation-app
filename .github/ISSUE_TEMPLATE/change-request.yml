@@ -2,7 +2,6 @@ name: "Change Request (AI-Optimized)"
 description: "Detailliertes Formular für Change-Requests, optimiert für die Verarbeitung durch KI-Agenten"
 title: "[CHANGE]: "
 labels: ["enhancement", "change-request"]
-type: "enhancement"
 
 body:
   - type: markdown

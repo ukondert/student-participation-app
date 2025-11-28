@@ -79,15 +79,15 @@ erDiagram
     SCHOOL_CLASS {
         int id PK
         string name
-        string classLeader
-        string roomID
+        string teacher
+        string room
         string schoolYear
     }
 
     SUBJECT {
         int id PK
         string name
-        string fullName
+        string shortName
         string notes
         int classId FK
     }
@@ -96,31 +96,44 @@ erDiagram
         int id PK
         string firstName
         string lastName
-        string photo
+        string photoPath
         string shortCode
         int classId FK
     }
 
-    TEACHER {
+    NEGATIVE_BEHAVIOR {
         int id PK
-        string name
-        string password
+        string description
+    }
+
+    PROTOCOL_SESSION {
+        int id PK
+        int subjectId FK
+        datetime startTime
+        datetime endTime
+        string topic
+        string notes
+        string homework
     }
 
     PARTICIPATION {
         int id PK
         int studentId FK
         int subjectId FK
-        date date
+        datetime date
         bool isPositive
-        string notes
+        string note
+        int behaviorId FK
+        int sessionId FK
     }
 
-    SCHOOL_CLASS ||--o{ SUBJECT : has
-    SUBJECT ||--o{ STUDENT : includes
-    TEACHER ||--o{ SUBJECT : teaches
-    STUDENT ||--o{ PARTICIPATION : records
-    SUBJECT ||--o{ PARTICIPATION : tracks
+    SCHOOL_CLASS ||--o{ SUBJECT : "has"
+    SCHOOL_CLASS ||--o{ STUDENT : "contains"
+    STUDENT ||--o{ PARTICIPATION : "records"
+    SUBJECT ||--o{ PARTICIPATION : "tracks"
+    SUBJECT ||--o{ PROTOCOL_SESSION : "has sessions"
+    PROTOCOL_SESSION ||--o{ PARTICIPATION : "contains"
+    NEGATIVE_BEHAVIOR ||--o{ PARTICIPATION : "categorizes"
 ```
 
 ## 🚀 Installation & Setup

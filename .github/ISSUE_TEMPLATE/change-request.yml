@@ -1,0 +1,274 @@
+name: "Change Request (AI-Optimized)"
+description: "Detailliertes Formular für Change-Requests, optimiert für die Verarbeitung durch KI-Agenten"
+title: "[CHANGE]: "
+labels: ["enhancement", "change-request"]
+type: "enhancement"
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🤖 AI-Optimiertes Change Request Formular
+
+        Dieses Formular erfasst alle notwendigen Informationen, damit ein KI-Agent Ihren Change-Request verstehen und umsetzen kann.
+
+        **Bitte füllen Sie alle Pflichtfelder aus und seien Sie so detailliert wie möglich.**
+
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: "Change-Typ"
+      description: "Welche Art von Änderung möchten Sie durchführen?"
+      options:
+        - "Feature hinzufügen"
+        - "Feature ändern/erweitern"
+        - "Feature entfernen"
+        - "Refactoring (Code-Verbesserung ohne Verhaltensänderung)"
+        - "Performance-Optimierung"
+        - "UI/UX-Verbesserung"
+        - "Bug-Fix mit Verhaltensänderung"
+        - "Dokumentation"
+        - "Sonstiges"
+    validations:
+      required: true
+
+  - type: input
+    id: summary
+    attributes:
+      label: "Kurzbeschreibung"
+      description: "Fassen Sie den Change-Request in einem Satz zusammen"
+      placeholder: "z.B. Implementierung eines Dark Mode für die gesamte Anwendung"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: "Kontext & Motivation"
+      description: "Warum ist diese Änderung notwendig? Welches Problem wird gelöst?"
+      placeholder: |
+        - Welche User Story wird adressiert?
+        - Welches Problem haben Benutzer aktuell?
+        - Welchen Mehrwert bringt die Änderung?
+        - Gibt es externe Anforderungen (z.B. Compliance, Performance)?
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-situation
+    attributes:
+      label: "Aktuelle Situation (IST-Zustand)"
+      description: "Beschreiben Sie den aktuellen Zustand/das aktuelle Verhalten"
+      placeholder: |
+        - Wie funktioniert es aktuell?
+        - Welche Komponenten/Dateien sind betroffen? (falls bekannt)
+        - Relevante Code-Stellen oder Dateipfade
+        - Screenshots oder Logs (falls relevant)
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired-behavior
+    attributes:
+      label: "Gewünschtes Verhalten (SOLL-Zustand)"
+      description: "Beschreiben Sie detailliert, wie es nach der Änderung funktionieren soll"
+      placeholder: |
+        - Was soll sich ändern?
+        - Wie soll das neue Verhalten aussehen?
+        - Welche neuen Funktionen sollen hinzugefügt werden?
+        - Wie soll die Benutzerinteraktion ablaufen?
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: "Akzeptanzkriterien"
+      description: "Messbare Kriterien für eine erfolgreiche Umsetzung (im Given-When-Then Format, falls möglich)"
+      placeholder: |
+        - GIVEN [Ausgangssituation]
+        - WHEN [Aktion]
+        - THEN [Erwartetes Ergebnis]
+
+        Beispiel:
+        - GIVEN der Benutzer ist auf der Startseite
+        - WHEN der Benutzer auf den Dark Mode Button klickt
+        - THEN wird das Theme auf Dark Mode umgestellt und die Einstellung gespeichert
+
+        Zusätzlich:
+        - Was muss funktionieren?
+        - Was darf nicht kaputt gehen?
+        - Welche Edge Cases müssen berücksichtigt werden?
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical-requirements
+    attributes:
+      label: "Technische Anforderungen & Constraints"
+      description: "Technische Vorgaben, die bei der Implementierung beachtet werden müssen"
+      placeholder: |
+        - Architektur-Vorgaben (z.B. Clean Architecture, MVC)
+        - Zu verwendende Design Patterns
+        - Technologie-Stack-Einschränkungen
+        - Performance-Anforderungen (z.B. Ladezeit < 2s)
+        - Kompatibilitätsanforderungen (Browser, Geräte, OS-Versionen)
+        - Sicherheitsanforderungen
+        - Barrierefreiheit (Accessibility)
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: affected-components
+    attributes:
+      label: "Betroffene Komponenten"
+      description: "Welche Teile der Anwendung sind von dieser Änderung betroffen?"
+      options:
+        - label: "UI/Frontend (Benutzeroberfläche)"
+        - label: "Backend/Business Logic (Geschäftslogik)"
+        - label: "Datenbank/Persistenz (Datenspeicherung)"
+        - label: "API/Schnittstellen"
+        - label: "Tests (Unit, Integration, E2E)"
+        - label: "Dokumentation (README, Code-Kommentare, Wiki)"
+        - label: "Build/Deployment-Prozess"
+        - label: "Konfiguration/Umgebungsvariablen"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Priorität"
+      description: "Wie dringend ist diese Änderung?"
+      options:
+        - "🔴 Kritisch (Breaking Change, Blocker)"
+        - "🟠 Hoch (Wichtig für nächstes Release)"
+        - "🟡 Mittel (Wünschenswert)"
+        - "🟢 Niedrig (Nice-to-have)"
+      default: 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: "Abhängigkeiten"
+      description: "Gibt es Abhängigkeiten zu anderen Issues, PRs oder externen Faktoren?"
+      placeholder: |
+        - Abhängigkeiten zu anderen Issues: #123, #456
+        - Abhängigkeiten zu Pull Requests: PR #789
+        - Externe Abhängigkeiten (z.B. API-Updates, Library-Versionen)
+        - Voraussetzungen (z.B. andere Features müssen zuerst implementiert werden)
+        - Blockiert durch: [Beschreibung]
+    validations:
+      required: false
+
+  - type: textarea
+    id: implementation-suggestions
+    attributes:
+      label: "Vorschläge zur Implementierung (Optional)"
+      description: "Haben Sie Ideen, wie die Änderung technisch umgesetzt werden könnte?"
+      placeholder: |
+        - Vorgeschlagener Ansatz/Algorithmus
+        - Alternative Lösungsansätze
+        - Zu berücksichtigende Trade-offs
+        - Relevante Libraries/Packages
+        - Code-Beispiele oder Pseudocode
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    id: verification-plan
+    attributes:
+      label: "Verifikationsplan"
+      description: "Wie soll überprüft werden, dass die Änderung korrekt funktioniert?"
+      placeholder: |
+        **Manuelle Testschritte:**
+        1. [Schritt 1]
+        2. [Schritt 2]
+        3. [Erwartetes Ergebnis]
+
+        **Automatisierte Tests:**
+        - Unit Tests für [Komponente X]
+        - Integration Tests für [Workflow Y]
+        - E2E Tests für [User Journey Z]
+
+        **Zu prüfende Szenarien:**
+        - Happy Path: [Beschreibung]
+        - Edge Cases: [Beschreibung]
+        - Error Handling: [Beschreibung]
+
+        **Performance-Tests:**
+        - [Metrik] sollte [Wert] sein
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: "Zusätzliche Informationen (Optional)"
+      description: "Weitere hilfreiche Informationen für die Implementierung"
+      placeholder: |
+        - Screenshots oder Mockups (Drag & Drop oder URLs)
+        - Links zu relevanten Dokumenten/Spezifikationen
+        - Beispiel-Code oder Referenz-Implementierungen
+        - Ähnliche Features in anderen Projekten
+        - Diskussionen oder RFCs
+      render: markdown
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: breaking-changes
+    attributes:
+      label: "Breaking Changes"
+      description: "Enthält diese Änderung Breaking Changes?"
+      options:
+        - label: "⚠️ Diese Änderung enthält Breaking Changes (API-Änderungen, Datenbank-Migrationen, etc.)"
+          required: false
+
+  - type: textarea
+    id: breaking-changes-description
+    attributes:
+      label: "Beschreibung der Breaking Changes (falls zutreffend)"
+      description: "Wenn Sie oben 'Breaking Changes' angekreuzt haben, beschreiben Sie diese hier detailliert"
+      placeholder: |
+        - Welche APIs/Interfaces ändern sich?
+        - Welche Datenbank-Migrationen sind notwendig?
+        - Welche Konfigurationsänderungen sind erforderlich?
+        - Wie können Benutzer migrieren?
+        - Gibt es einen Migrations-Guide?
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+
+        ## 📋 Checkliste für KI-Agent
+
+        Der KI-Agent wird folgende Schritte durchführen:
+        1. ✅ Anforderungen analysieren und verstehen
+        2. 📝 Implementierungsplan erstellen
+        3. 💻 Code-Änderungen durchführen
+        4. 🧪 Tests schreiben/anpassen
+        5. 📚 Dokumentation aktualisieren
+        6. ✔️ Verifikation durchführen
+        7. 📊 Ergebnisse dokumentieren
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: "Code of Conduct"
+      description: "Durch das Absenden dieses Change-Requests bestätigen Sie:"
+      options:
+        - label: "Ich habe alle relevanten Informationen bereitgestellt"
+          required: true
+        - label: "Ich verstehe, dass ein KI-Agent diesen Change-Request verarbeiten wird"
+          required: true
+        - label: "Ich werde bei Rückfragen zeitnah antworten"
+          required: true

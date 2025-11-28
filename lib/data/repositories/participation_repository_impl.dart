@@ -220,6 +220,27 @@ class ParticipationRepositoryImpl implements IParticipationRepository {
   }
 
   @override
+  Future<int> addSession(
+      int subjectId,
+      DateTime startTime,
+      DateTime? endTime, {
+      String? topic,
+      String? notes,
+      String? homework,
+  }) {
+    return _db
+        .into(_db.protocolSessions)
+        .insert(db.ProtocolSessionsCompanion.insert(
+          subjectId: subjectId,
+          startTime: startTime,
+          endTime: Value(endTime),
+          topic: Value(topic),
+          notes: Value(notes),
+          homework: Value(homework),
+        ));
+  }
+
+  @override
   Future<void> endSession(int sessionId) async {
     await (_db.update(_db.protocolSessions)
           ..where((tbl) => tbl.id.equals(sessionId)))
@@ -304,6 +325,23 @@ class ParticipationRepositoryImpl implements IParticipationRepository {
                 OrderingTerm(expression: t.startTime, mode: OrderingMode.desc)
           ]))
         .get();
+
+    return rows
+        .map((row) => domain.ProtocolSession(
+              id: row.id,
+              subjectId: row.subjectId,
+              startTime: row.startTime,
+              endTime: row.endTime,
+              topic: row.topic,
+              notes: row.notes,
+              homework: row.homework,
+            ))
+        .toList();
+  }
+
+  @override
+  Future<List<domain.ProtocolSession>> getAllSessions() async {
+    final rows = await _db.select(_db.protocolSessions).get();
 
     return rows
         .map((row) => domain.ProtocolSession(

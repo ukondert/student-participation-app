@@ -17,6 +17,7 @@ class DataImportService {
     final List<dynamic> subjectsJson = data['subjects'] ?? [];
     final List<dynamic> studentsJson = data['students'] ?? [];
     final List<dynamic> participationsJson = data['participations'] ?? [];
+    final List<dynamic> protocolSessionsJson = data['protocolSessions'] ?? [];
 
     // Fetch existing data to prevent duplicates
     final existingClasses = await _repository.getAllClasses();
@@ -45,6 +46,8 @@ class DataImportService {
     final Map<int, int> subjectIdMap = {};
     // Map old Student ID -> New Student ID
     final Map<int, int> studentIdMap = {};
+    // Map old Session ID -> New Session ID
+    final Map<int, int> sessionIdMap = {};
 
     // 1. Import Classes
     for (final c in classesJson) {
@@ -114,21 +117,43 @@ class DataImportService {
       }
     }
 
-    // 4. Import Participations
+    // 4. Import Protocol Sessions (before participations since participations reference sessions)
+    if (includeParticipations) {
+      for (final s in protocolSessionsJson) {
+        final oldSubjectId = s['subjectId'] as int;
+        if (subjectIdMap.containsKey(oldSubjectId)) {
+          final newSubjectId = subjectIdMap[oldSubjectId]!;
+          final startTime = DateTime.parse(s['startTime'] as String);
+          final endTimeStr = s['endTime'] as String?;
+          final endTime = endTimeStr != null ? DateTime.parse(endTimeStr) : null;
+
+          final newSessionId = await _participationRepository.addSession(
+            newSubjectId,
+            startTime,
+            endTime,
+            topic: s['topic'] as String?,
+            notes: s['notes'] as String?,
+            homework: s['homework'] as String?,
+          );
+          sessionIdMap[s['id'] as int] = newSessionId;
+        }
+      }
+    }
+
+    // 5. Import Participations
     if (includeParticipations) {
       for (final p in participationsJson) {
         final oldStudentId = p['studentId'] as int;
         final oldSubjectId = p['subjectId'] as int;
 
         if (studentIdMap.containsKey(oldStudentId) && subjectIdMap.containsKey(oldSubjectId)) {
-          // Check if participation already exists? 
-          // For now, we assume participations might be duplicates if we run import multiple times,
-          // but the requirement was mainly about Classes and Subjects. 
-          // Ideally we should also check for existing participations to be safe, 
-          // but let's stick to the plan which focused on Classes/Subjects/Students duplication.
-          // However, if we re-import, we might duplicate participations if we don't check.
-          // Given the user request specifically mentioned Classes and Subjects, I will stick to that for now.
-          // But to be safe, maybe we should just add them.
+          final oldSessionId = p['sessionId'] as int?;
+          // Only use the new session ID if the old session was successfully imported
+          // If the session wasn't found in the map, the participation will be imported without a session reference
+          int? newSessionId;
+          if (oldSessionId != null && sessionIdMap.containsKey(oldSessionId)) {
+            newSessionId = sessionIdMap[oldSessionId];
+          }
           
           await _participationRepository.addParticipation(
             studentIdMap[oldStudentId]!,
@@ -136,6 +161,7 @@ class DataImportService {
             p['isPositive'] as bool,
             note: p['note'] as String?,
             behaviorId: p['behaviorId'] as int?,
+            sessionId: newSessionId,
           );
         }
       }

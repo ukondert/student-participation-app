@@ -148,7 +148,12 @@ class DataImportService {
 
         if (studentIdMap.containsKey(oldStudentId) && subjectIdMap.containsKey(oldSubjectId)) {
           final oldSessionId = p['sessionId'] as int?;
-          final newSessionId = oldSessionId != null ? sessionIdMap[oldSessionId] : null;
+          // Only use the new session ID if the old session was successfully imported
+          // If the session wasn't found in the map, the participation will be imported without a session reference
+          int? newSessionId;
+          if (oldSessionId != null && sessionIdMap.containsKey(oldSessionId)) {
+            newSessionId = sessionIdMap[oldSessionId];
+          }
           
           await _participationRepository.addParticipation(
             studentIdMap[oldStudentId]!,

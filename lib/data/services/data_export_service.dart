@@ -13,6 +13,7 @@ class DataExportService {
     final subjects = await _repository.getAllSubjects();
     final students = await _repository.getAllStudents();
     final participations = includeParticipations ? await _participationRepository.getAllParticipations() : [];
+    final protocolSessions = includeParticipations ? await _participationRepository.getAllSessions() : [];
 
     final Map<String, dynamic> data = {
       'version': 1,
@@ -49,6 +50,16 @@ class DataExportService {
           'note': p.note,
           'behaviorId': p.behaviorId,
           'sessionId': p.sessionId,
+        }).toList(),
+      if (includeParticipations)
+        'protocolSessions': protocolSessions.map((s) => {
+          'id': s.id,
+          'subjectId': s.subjectId,
+          'startTime': s.startTime.toIso8601String(),
+          'endTime': s.endTime?.toIso8601String(),
+          'topic': s.topic,
+          'notes': s.notes,
+          'homework': s.homework,
         }).toList(),
     };
 

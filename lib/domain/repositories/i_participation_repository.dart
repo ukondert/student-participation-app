@@ -20,10 +20,19 @@ abstract class IParticipationRepository {
   // Protocol Sessions
   Future<int> startSession(int subjectId,
       {String? topic, String? notes, String? homework});
+  Future<int> addSession(
+      int subjectId,
+      DateTime startTime,
+      DateTime? endTime, {
+      String? topic,
+      String? notes,
+      String? homework,
+  });
   Future<void> endSession(int sessionId);
   Future<void> updateSession(int sessionId,
       {String? topic, String? notes, String? homework});
   Future<ProtocolSession?> getActiveSession(int subjectId);
   Stream<ProtocolSession?> watchActiveSession(int subjectId);
   Future<List<ProtocolSession>> getSessionsForSubject(int subjectId);
+  Future<List<ProtocolSession>> getAllSessions();
 }
